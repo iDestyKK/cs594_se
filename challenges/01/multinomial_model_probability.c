@@ -64,5 +64,8 @@ int main(int argc, char **argv) {
 		line = NULL;
 	}
 
+	if (line)
+		free(line);
+
 	return 0;
 }

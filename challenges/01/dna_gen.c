@@ -44,5 +44,7 @@ int main(int argc, char **argv) {
 
 	printf("%s\n", str);
 
+	free(str);
+
 	return 0;
 }
