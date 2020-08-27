@@ -52,5 +52,9 @@ $(OBJ)/complement.o: $(SRC)/complement.c
 $(OBJ)/multinomial_model_probability.o: $(SRC)/multinomial_model_probability.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+# -----------------------------------------------------------------------------
+# Extras                                                                   {{{1
+# -----------------------------------------------------------------------------
+
 clean:
 	$(RM) $(EXEC) obj/*
