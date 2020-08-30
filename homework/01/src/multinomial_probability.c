@@ -34,10 +34,11 @@ typedef struct {
 // Helper Function Prototypes                                              {{{1
 // ----------------------------------------------------------------------------
 
-void   destruct_key(CNM_NODE *node);
-CN_MAP report_freq (CN_STRING, const char *, size_t, size_t);
-void   freq_analyse(CN_MAP, CN_STRING, const char *, size_t, size_t, size_t,
-                    char *);
+void      destruct_key(CNM_NODE *node);
+CN_STRING cn_string_import_fasta(const char *);
+CN_MAP    report_freq (CN_STRING, const char *, size_t, size_t);
+void      freq_analyse(CN_MAP, CN_STRING, const char *, size_t, size_t, size_t,
+                       char *);
 
 // ----------------------------------------------------------------------------
 // Helper Function Definitions                                             {{{1
@@ -52,6 +53,69 @@ void destruct_key(CNM_NODE *node) {
 
 	if (v != NULL)
 		free(v);
+}
+
+/*
+ * fasta_import_to_cn_string
+ *
+ * Imports a fasta file into a CN_String, if possible. Program exits with an
+ * error message if such a file doesn't exist.
+ */
+
+CN_STRING fasta_import_to_cn_string(const char *path) {
+	FILE    *fp;
+	char    *line;
+	ssize_t  nread;
+	size_t   len, sz, i;
+	CN_STRING str;
+
+	line = NULL;
+
+	//Open training file for reading
+	fp = fopen(path, "r");
+	if (fp == NULL) {
+		fprintf(stderr, "fatal: Failed to open \"%s\": ", path);
+		perror("");
+		exit(2);
+	}
+
+	str = cn_string_init();
+
+	//Read in lines from the training data
+	while (nread = getline(&line, &len, fp) != -1) {
+		sz = strlen(line);
+
+		//If a comment, ignore it
+		if (sz > 0 && line[0] == '>') {
+			free(line);
+			line = NULL;
+			continue;
+		}
+
+		//Erase newline & carriage return if possible
+		for (i = 0; i < 2; i++)
+			if (line[sz - 1] == '\n' || line[sz - 1] == '\r')
+				line[sz -- - 1] = 0;
+
+		//Change "N" into "A" if possible
+		for (i = 0; i < sz; i++)
+			if (line[i] == 'N')
+				line[i] = 'A';
+
+		//Add to the sequence string
+		cn_string_concat_from_cstr(str, line);
+
+		//Clean up
+		free(line);
+		line = NULL;
+	}
+
+	if (line)
+		free(line);
+
+	fclose(fp);
+
+	return str;
 }
 
 /*
@@ -143,106 +207,69 @@ void freq_analyse(
 // ----------------------------------------------------------------------------
 
 int main(int argc, char **argv) {
+	//Initial Variables
 	char        *line, *str, *search_str;
 	FILE        *fp;
-	size_t       len, sz, i, j, pos;
-	ssize_t      nread;
-	CN_STRING    seq;
-	size_t       freq[4];
-	const char   opt[4] = { 'A', 'C', 'G', 'T' };
-	CN_MAP       results;
-	CNM_ITERATOR it;
+	size_t       sz, i, j, pos;
 	long double  val;
 
+	//CNDS
+	CN_STRING    training_seq, gen_seq;
+	CN_MAP       train_results, gen_results;
+	CNM_ITERATOR it, itt;
+
+	//Valid characters in fasta
+	const char   opt[4] = { 'A', 'C', 'G', 'T' };
+
 	//Argument check
-	if (argc != 2) {
-		fprintf(stderr, "usage: %s in_fasta\n", argv[0]);
+	if (argc != 3) {
+		fprintf(stderr, "usage: %s in_training_fasta in_gen_fasta\n", argv[0]);
 		return 1;
 	}
 
 	//Default values
 	line = NULL;
-	freq[0] = freq[1] = freq[2] = freq[3] = 0;
 
-	//Open file for reading
-	fp = fopen(argv[1], "r");
-	if (fp == NULL) {
-		fprintf(stderr, "fatal: Failed to open \"%s\": ", argv[1]);
-		perror("");
-		return 2;
-	}
-
-	seq = cn_string_init();
-
-	//Read in lines and reverse 
-	while (nread = getline(&line, &len, fp) != -1) {
-		sz = strlen(line);
-
-		//If a comment, ignore it
-		if (sz > 0 && line[0] == '>') {
-			free(line);
-			line = NULL;
-			continue;
-		}
-
-		//Erase newline & carriage return if possible
-		for (i = 0; i < 2; i++)
-			if (line[sz - 1] == '\n' || line[sz - 1] == '\r')
-				line[sz -- - 1] = 0;
-
-		//Change "N" into "A" if possible
-		for (i = 0; i < sz; i++)
-			if (line[i] == 'N')
-				line[i] = 'A';
-
-		//Add to the sequence string
-		cn_string_concat_from_cstr(seq, line);
-
-		//Clean up
-		free(line);
-		line = NULL;
-	}
-
-	if (line)
-		free(line);
-
-	fclose(fp);
+	//Import fasta files
+	training_seq = fasta_import_to_cn_string(argv[1]);
+	gen_seq      = fasta_import_to_cn_string(argv[2]);
 
 	//Ok, go through every character in the string, complement, print.
-	str = cn_string_str(seq);
-	sz  = cn_string_len(seq);
+	str = cn_string_str(training_seq);
+	sz  = cn_string_len(training_seq);
+
+	search_str = (char *) malloc(sizeof(char) * 2);
+	search_str[1] = 0;
 
 	//Compute frequencies
-	results = report_freq(seq, opt, 4, 1);
+	train_results = report_freq(training_seq, opt, 4, 1);
+	gen_results   = report_freq(gen_seq     , opt, 4, 1);
 
 	//Compute the probability
 	val = 0.0f;
 
 	//Iterate through the results map and use clever logarithmic math to cheat
-	cn_map_traverse(results, &it) {
-		freq_pair *pair = &cn_map_iterator_value(&it, freq_pair);
+	for (i = 0; i < 4; i++) {
+		//Generate the search string and traverse CN_Map for probability data
+		search_str[0] = opt[i];
+		cn_map_find(train_results, &it , &search_str);
+		cn_map_find(gen_results  , &itt, &search_str);
 
-		//Print out data structure information
-		printf(
-			"{ %s, { %d, %.17Lg} }\n",
-			cn_map_iterator_key(&it, char *),
-			pair->freq, pair->prob
-		);
+		freq_pair *pair[2];
+		pair[0] = &cn_map_iterator_value(&it , freq_pair);
+		pair[1] = &cn_map_iterator_value(&itt, freq_pair);
 
-		val += pair->freq * logl(pair->prob);
+		//Math and stuff
+		val += pair[1]->freq * logl(pair[0]->prob);
 	}
 
-	/*
-	printf("      P  = %.17Lg\n", val);
-	printf("log10(P) = %.17Lg\n", log10l(val));
-	printf("   ln(P) = %.17Lg\n", logl(val));
-	*/
-
-	printf("\nln(P) = %.17Lg\n", val);
+	//Print out. We're done here.
+	printf("ln(P) = %.17Lg\n", val);
 
 	//Clean up
-	cn_string_free(seq);
-	cn_map_free(results);
+	cn_string_free(training_seq);
+	cn_map_free(train_results);
+	cn_map_free(gen_results);
 
 	return 0;
 }
