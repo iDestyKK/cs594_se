@@ -208,7 +208,7 @@ void freq_analyse(
 
 int main(int argc, char **argv) {
 	//Initial Variables
-	char        *line, *str, *search_str;
+	char        *str, *search_str;
 	FILE        *fp;
 	size_t       sz, i, j, pos;
 	long double  val;
@@ -226,9 +226,6 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "usage: %s in_training_fasta in_gen_fasta\n", argv[0]);
 		return 1;
 	}
-
-	//Default values
-	line = NULL;
 
 	//Import fasta files
 	training_seq = fasta_import_to_cn_string(argv[1]);
