@@ -21,7 +21,7 @@
 #include "../lib/cnds/cn_map.h"
 
 // ----------------------------------------------------------------------------
-// Helper Function Prototypes                                              {{{1
+// Structs                                                                 {{{1
 // ----------------------------------------------------------------------------
 
 /* struct for holding pair of size_t and long double */
