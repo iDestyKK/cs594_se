@@ -19,7 +19,8 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/reverse_complement
+	$(BIN)/reverse_complement \
+	$(BIN)/frequency_analysis
 
 all: $(EXEC)
 
@@ -28,6 +29,9 @@ all: $(EXEC)
 # -----------------------------------------------------------------------------
 
 $(BIN)/reverse_complement: $(OBJ)/reverse_complement.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BIN)/frequency_analysis: $(OBJ)/frequency_analysis.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 # -----------------------------------------------------------------------------
@@ -42,6 +46,9 @@ $(OBJ)/cnds.a: $(OBJ)/cn_string.o
 # -----------------------------------------------------------------------------
 
 $(OBJ)/reverse_complement.o: $(SRC)/reverse_complement.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/frequency_analysis.o: $(SRC)/frequency_analysis.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # -----------------------------------------------------------------------------
