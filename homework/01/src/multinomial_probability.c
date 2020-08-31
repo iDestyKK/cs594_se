@@ -85,7 +85,11 @@ int main(int argc, char **argv) {
 	printf("ln(P) = %.17Lg\n", val);
 
 	//Clean up
+	free(search_str);
+
 	cn_string_free(training_seq);
+	cn_string_free(gen_seq);
+
 	cn_map_free(train_results);
 	cn_map_free(gen_results);
 
