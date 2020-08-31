@@ -218,7 +218,15 @@ int main(int argc, char **argv) {
 
 	free(ins);
 
-	printf("%s\n", cn_string_str(gen_str));
+	//Output the file adhering to the same standards the other fasta files had
+	printf(">Generated sequence based on Markov Model order %d\n", chain_len);
+
+	for (i = 0; i < cn_string_len(gen_str); i++) {
+		if (i > 0 && i % 70 == 0)
+			printf("\n");
+		printf("%c", cn_string_str(gen_str)[i]);
+	}
+	printf("\n");
 
 	//Clean up
 	//free(search_str);
