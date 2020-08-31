@@ -159,4 +159,30 @@ PROBLEMS: (due 9/1/2020)
      your instructor how to run it in your write up. (8 points)
 
 
+     The "make" instructions mentioned in Problem 3 will also compile the
+     program used for this problem. In this case, it's "sequence_gen", stored
+     in the "bin" directory post-compilation.
+
+     To generate a random sequence of 20,000 characters using a Markov model of
+     order 3 trained on the human mitochondrial genone, run the following:
+
+         UNIX> ./bin/sequence_gen data/human_mito.fasta 20000 3 0
+
+
+     You may also run it with only specifying the fasta file. The default
+     parameters are tuned specifically to the assignment requirements. You may
+     also specify a seed for the random number generator, and even a custom
+     order for the Markov model. The synopsis is:
+
+         UNIX> ./bin/sequence_gen in_training_fasta [length order seed]
+
+
+     For convenience, a generated output file is present in the "data"
+     directory as "generated_sequence.fasta". This file was generated with the
+     following commands on Hydra0:
+
+         UNIX> ./bin/sequence_gen data/human_mito.fasta 20000 3 0 > data.out
+         UNIX> mv data.out data/generated_sequence.fasta
+
+
 
