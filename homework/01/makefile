@@ -22,7 +22,8 @@ CNDS = $(LIB)/cnds
 EXEC = \
 	$(BIN)/reverse_complement      \
 	$(BIN)/frequency_analysis      \
-	$(BIN)/multinomial_probability
+	$(BIN)/multinomial_probability \
+	$(BIN)/markov_probability
 
 all: $(EXEC)
 
@@ -37,6 +38,9 @@ $(BIN)/frequency_analysis: $(OBJ)/frequency_analysis.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(BIN)/multinomial_probability: $(OBJ)/multinomial_probability.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^ $(CMFLAGS)
+
+$(BIN)/markov_probability: $(OBJ)/markov_probability.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ $(CMFLAGS)
 
 # -----------------------------------------------------------------------------
@@ -57,6 +61,9 @@ $(OBJ)/frequency_analysis.o: $(SRC)/frequency_analysis.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/multinomial_probability.o: $(SRC)/multinomial_probability.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/markov_probability.o: $(SRC)/markov_probability.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # -----------------------------------------------------------------------------
