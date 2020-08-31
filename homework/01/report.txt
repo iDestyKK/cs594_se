@@ -1,43 +1,162 @@
-1. Review the honor code statement in the syllabus and read the accompying
-   document. Please state in the accompanying writeup to this assignment that
-   you have read and agree to the terms (2 points)
+SUBMISSION DETAILS
 
-   I have read and agree to the terms.
+  Before we begin, this submission contains several directories. For the sake
+  of simplicity, "src" is the source code to the programs this assignment
+  requests. "lib" contains CNDS, which is a collection of C libraries written
+  entirely by me. All code here (library or not) is entirely my own work.
 
+  The fasta data files are stored in "data". My apologies if storing them in a
+  directory causes any problems.
 
-2. Download the complete genomic sequence of bacteriophage lambda (accession
-   NC_001416.1) and include it in your submission as “lambda.fasta” (1 points)
+  There is a makefile supplied with this submission. To compile every program,
+  simply run "make". Every executable will be put into the "bin" directory.
 
-   ok
-
-
-3. Write a small program to reverse complement the lambda genome. Save the new
-   sequence with a FASTA header of “>reversed” and name the resulting file as
-   "lambda.rev.fasta". Include this file and the source code in your
-   submission, and instruct your instructor how to compile and run it in the
-   accompanying write up called "report.txt" (5 points)
+  This is written in C and adheres to the GNU89 standard (C89 with GNU
+  extensions). Compilation was tested on UTK's EECS Hydra machines.
 
 
-4. Write a small program that reports nucleotide frequencies and dinucleotide
-   frequencies of lambda. Add instructions on how to run it and include your
-   actual output in your write up (report.txt), and also include your code in
-   the submission (5 points)
+PROBLEMS: (due 9/1/2020)
+
+  1. Review the honor code statement in the syllabus and read the accompying
+     document. Please state in the accompanying writeup to this assignment that
+     you have read and agree to the terms (2 points)
 
 
-5. Download the human mitochondrial genome (NC_012920). Place it in your
-   submission as "human_mito.fasta." Download the Neanderthal hypervariable
-   region (AF254446). Save it in your submission as "neander_sample.fasta." (1
-   points)
+     I have read and agree to the terms.
 
 
-6. Write small programs to compute the log of the probability of the
-   Neanderthal sequence under a multinomial model and a markov model of order
-   3, both of which are trained from the human mitochondrial sequence. Place
-   the code in your submission and report the results in your write up. (8
-   points)
+
+  2. Download the complete genomic sequence of bacteriophage lambda (accession
+     NC_001416.1) and include it in your submission as “lambda.fasta” (1 points)
 
 
-7. Generate a random sequence of 20,000 characters using a Markov model of
-   order 3 trained on the human mitochondrial genome (you can start with your
-   code from part #5). Place the code for this in your submission and tell your
-   instructor how to run it in your write up. (8 points)
+     ok
+
+
+
+  3. Write a small program to reverse complement the lambda genome. Save the
+     new sequence with a FASTA header of ">reversed" and name the resulting
+     file as "lambda.rev.fasta". Include this file and the source code in your
+     submission, and instruct your instructor how to compile and run it in the
+     accompanying write up called "report.txt" (5 points)
+
+
+     To compile, simply run the following command in the same directory as the
+     supplied "makefile":
+
+         UNIX> make
+
+
+     An executable, named "reverse_complement" will be compiled and stored in
+     the "bin" directory. This is the executable we will use for this problem.
+
+     To run on "lambda.fasta" and give out a "lambda.rev.fasta", run the
+     following:
+
+         UNIX> ./bin/reverse_complement data/lambda.fasta lambda.rev.fasta
+
+
+
+  4. Write a small program that reports nucleotide frequencies and dinucleotide
+     frequencies of lambda. Add instructions on how to run it and include your
+     actual output in your write up (report.txt), and also include your code in
+     the submission (5 points)
+
+
+     The "make" instructions mentioned in Problem 3 will also compile the
+     program used for this problem. In this case, it's "frequency_analysis",
+     stored in the "bin" directory post-compilation.
+
+     To run on "lambda.fasta", run the following:
+
+         UNIX> ./bin/frequency_analysis data/lambda.fasta
+
+
+     The results are as follows:
+
+         Nucleotide frequencies:
+         A 0.2542987918023999
+         C 0.23425838109768669
+         G 0.2643189971547565
+         T 0.2471238299451569
+
+         Dinucleotide frequencies:
+         AA 0.076122141811509041
+         AC 0.053050452567988289
+         AG 0.056328735489989897
+         AT 0.068802705098863941
+         CA 0.066307911177089132
+         CC 0.05148347456753469
+         CG 0.064184243623842807
+         CT 0.052287581699346405
+         GA 0.067132636440485763
+         GC 0.074534545679470526
+         GG 0.065565658440032164
+         GT 0.057070988227046865
+         TA 0.044741345539267232
+         TC 0.055194738252819529
+         TG 0.07822519123317045
+         TT 0.068967650151543267
+
+
+
+  5. Download the human mitochondrial genome (NC_012920). Place it in your
+     submission as "human_mito.fasta." Download the Neanderthal hypervariable
+     region (AF254446). Save it in your submission as "neander_sample.fasta."
+     (1 points)
+
+     ok
+
+
+
+  6. Write small programs to compute the log of the probability of the
+     Neanderthal sequence under a multinomial model and a markov model of order
+     3, both of which are trained from the human mitochondrial sequence. Place
+     the code in your submission and report the results in your write up. (8
+     points)
+
+
+     The "make" instructions mentioned in Problem 3 will also compile the
+     programs used for this problem.
+
+
+     a. MULTINOMIAL MODEL
+        The program used for this portion is "multinomial_probability", stored
+        in the "bin" directory post-compilation.
+
+        To run on "neander_sample.fasta" with "human_mito.fasta" as training
+        data, run the following:
+
+            UNIX> ./bin/multinomial_probability data/human_mito.fasta data/neander_sample.fasta
+
+
+        The output is as follows:
+            ln(P) = -452.66231223269446
+
+
+
+     b. MARKOV MODEL OF ORDER 3
+        The program used for this portion is "markov_probability", stored
+        in the "bin" directory post-compilation.
+
+        To run on "neander_sample.fasta" with "human_mito.fasta" as training
+        data, run the following:
+
+            UNIX> ./bin/markov_probability data/human_mito.fasta data/neander_sample.fasta
+
+
+        The output is as follows:
+            ln(P) = -451.88373131616882
+
+
+        It's a little bit off... but close (somewhat).
+
+
+
+  7. Generate a random sequence of 20,000 characters using a Markov model of
+     order 3 trained on the human mitochondrial genome (you can start with your
+     code from part #5). Place the code for this in your submission and tell
+     your instructor how to run it in your write up. (8 points)
+
+
+
