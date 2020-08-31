@@ -37,10 +37,10 @@ $(BIN)/reverse_complement: $(OBJ)/reverse_complement.o $(OBJ)/cnds.a
 $(BIN)/frequency_analysis: $(OBJ)/frequency_analysis.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(BIN)/multinomial_probability: $(OBJ)/multinomial_probability.o $(OBJ)/cnds.a
+$(BIN)/multinomial_probability: $(OBJ)/multinomial_probability.o $(OBJ)/helper.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ $(CMFLAGS)
 
-$(BIN)/markov_probability: $(OBJ)/markov_probability.o $(OBJ)/cnds.a
+$(BIN)/markov_probability: $(OBJ)/markov_probability.o $(OBJ)/helper.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ $(CMFLAGS)
 
 # -----------------------------------------------------------------------------
@@ -64,6 +64,9 @@ $(OBJ)/multinomial_probability.o: $(SRC)/multinomial_probability.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/markov_probability.o: $(SRC)/markov_probability.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/helper.o: $(SRC)/helper.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # -----------------------------------------------------------------------------
