@@ -71,6 +71,8 @@ CN_STRING cn_string_substr(CN_STRING str, cn_uint pos, cn_uint len) {
 	
 	//Cheat
 	CN_STRING res = cn_string_init();
+	if (res->data != NULL)
+		free(res->data);
 	res->data = arr;
 	res->len  = len;
 
