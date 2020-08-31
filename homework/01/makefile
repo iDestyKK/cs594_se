@@ -94,4 +94,9 @@ $(OBJ)/cn_map.o: $(CNDS)/cn_map.c $(CNDS)/cn_map.h
 # -----------------------------------------------------------------------------
 
 clean:
-	$(RM) $(EXEC) obj/*
+	$(RM) $(EXEC) obj/* submit.tar.xz
+
+package: submit.tar.xz
+
+submit.tar.xz: $(BIN) data $(LIB) $(OBJ) $(SRC) distro.pdf makefile report.txt
+	tar -cJvf $@ $^
