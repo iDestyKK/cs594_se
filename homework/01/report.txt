@@ -57,6 +57,10 @@ PROBLEMS: (due 9/1/2020)
          UNIX> ./bin/reverse_complement data/lambda.fasta lambda.rev.fasta
 
 
+     As the requirement of this problem wants "lambda.rev.fasta" included in
+     the submission, It is stored as "data/lambda.rev.fasta".
+
+
 
   4. Write a small program that reports nucleotide frequencies and dinucleotide
      frequencies of lambda. Add instructions on how to run it and include your
