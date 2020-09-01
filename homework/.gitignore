@@ -1,0 +1,5 @@
+# VIM swap files
+.*.sw*
+
+# Submission tar files in assignment directories
+[0-9][0-9]/submit.tar.xz
