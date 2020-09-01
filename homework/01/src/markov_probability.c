@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 
 	//CNDS
 	CN_STRING    training_seq, gen_seq;
-	CN_MAP       training_results[2];
+	CN_MAP       training_results[3];
 	CNM_ITERATOR it, itt;
 
 	//Valid characters in fasta
@@ -81,6 +81,7 @@ int main(int argc, char **argv) {
 	//Compute frequencies
 	training_results[0] = report_freq(training_seq, opt, 4, chain_len + 1);
 	training_results[1] = report_freq(training_seq, opt, 4, chain_len    );
+	training_results[2] = report_freq(training_seq, opt, 4,             1);
 
 	/*
 	 * As per Piazza, divide 4-mer hash dictionary values by 3-mer hash values.
@@ -113,19 +114,19 @@ int main(int argc, char **argv) {
 
 	/*
 	 * For starters... that pi value in the equation. That's just the first
-	 * "chain_len" chars of probability thrown in.
+	 * "chain_len" chars of probability thrown in from the multinomial model.
 	 */
 
-	//Generate lookup string
-	for (i = 0; i < chain_len; i++)
-		search_str[i] = str[i];
-	
-	search_str[i] = 0;
+	for (i = 0; i < chain_len; i++) {
+		//Generate lookup string
+		search_str[0] = str[i];
+		search_str[1] = 0;
 
-	//Look through the CN_Map, get the probability, add it in.
-	cn_map_find(training_results[1], &it, &search_str);
+		//Look through the CN_Map, get the probability, add it in.
+		cn_map_find(training_results[2], &it, &search_str);
 
-	val += logl(cn_map_iterator_value(&it, freq_pair).prob);
+		val += logl(cn_map_iterator_value(&it, freq_pair).prob);
+	}
 
 	/*
 	 * Ok... now go through every few characters and do logarithm
@@ -155,6 +156,7 @@ int main(int argc, char **argv) {
 
 	cn_map_free(training_results[0]);
 	cn_map_free(training_results[1]);
+	cn_map_free(training_results[2]);
 
 	return 0;
 }

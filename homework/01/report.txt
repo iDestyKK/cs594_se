@@ -152,10 +152,10 @@ PROBLEMS: (due 9/1/2020)
 
 
         The output is as follows:
-            ln(P) = -451.88373131616882
+            ln(P) = -451.80692156252825
 
 
-        It's a little bit off... but close (somewhat).
+        It's a little bit off... but close.
 
 
 
