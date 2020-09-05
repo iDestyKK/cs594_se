@@ -1,0 +1,54 @@
+1. In your groups of 3-4 students, compute the full dynamic programming matrix
+   aligning CATC to CTCGC with matches receiving a +1, mismatches receiving -1,
+   and gaps with a penalty of -3.
+
+   Matrix
+                 C   T   C   G   C
+        +-------------------------
+        |    0  -3  -6  -9 -12 -15
+      C |   -3   1  -2  -5  -8 -11
+      A |   -6  -2   0  -3  -6  -9
+      T |   -9  -5  -1  -1  -4  -7
+      C |  -12  -8  -4   0  -2  -3
+
+   Alignment
+      C-ATC
+      CTCGC
+
+
+
+2. Compute the full dynamic programming matrix aligning CAT to ACAT using
+   end-gap free alignment and the parameters from Lecture 4: Match +1, mismatch
+   -2, gap -3.
+
+               A  C  A  T
+        +----------------
+        |   0  0  0  0  0
+      C |   0 -2  5  2 -1
+      A |   0  5  2 10  7
+      T |   0  2  3  7 15
+
+
+
+3. Compute the full dynamic programming matrix for local alignment using the
+   same example in Lecture 4: CTACT with ATACG and the same parameters as #2.
+
+               A  T  A  C  G
+        +-------------------
+        |   0  0  0  0  0  0
+      C |   0  0  0  0  5  2
+      T |   0  0  5  2  2  3
+      A |   0  5  2 10  7  4
+      C |   0  2  3  7 15 12
+      T |   0  0  7  4 12 13
+
+
+
+4. Attempt at least one of the simple dot plots from Lecture #5 (I recommend
+   slide 13). As a group, discuss what (if anything) is interesting about your
+   plot.
+
+     Didn't get to this just yet...
+
+
+
