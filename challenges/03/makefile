@@ -20,7 +20,8 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/allele_count
+	$(BIN)/allele_count \
+	$(BIN)/dna_gen
 
 all: $(EXEC)
 
@@ -29,6 +30,9 @@ all: $(EXEC)
 # -----------------------------------------------------------------------------
 
 $(BIN)/allele_count: $(OBJ)/allele_count.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BIN)/dna_gen: $(OBJ)/dna_gen.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 # -----------------------------------------------------------------------------
@@ -43,6 +47,9 @@ $(OBJ)/cnds.a: $(OBJ)/cn_cmp.o $(OBJ)/cn_map.o
 # -----------------------------------------------------------------------------
 
 $(OBJ)/allele_count.o: $(SRC)/allele_count.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/dna_gen.o: $(SRC)/dna_gen.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # -----------------------------------------------------------------------------
