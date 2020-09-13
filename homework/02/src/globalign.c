@@ -39,7 +39,8 @@ int main(int argc, char ** argv) {
 			"\t-m\tDisplay the DP table\n"
 			"\t-q\tQuiet(er). Stops printing headers before each section\n"
 			"\t-s\tDisplay strings post-alignment\n"
-			"\t-t\tHighlight the traceback in red (enables \"-m\" flag)\n"
+			"\t-t\tHighlight the traceback in red via ANSI (enables \"-m\" "
+			"flag)\n"
 			"\nThe information printed out is in the order you define the "
 			"arguments. So \"-am\" will print\nthe alignment, then the DP "
 			"table. And \"-ma\" will do the same but in reverse order.\n",
@@ -50,7 +51,7 @@ int main(int argc, char ** argv) {
 
 	params = arg_init();
 
-	//Custom arguments specified. Shift by 1.
+	//Parse arguments
 	arg_parse(params, argv[1]);
 
 	f1 = fasta_import_to_cn_string(argv[2]);
@@ -65,6 +66,7 @@ int main(int argc, char ** argv) {
 	//Ok... do it.
 	dp_run_global(obj);
 
+
 	//Ok, print out whatever was specified
 	sz = strlen(argv[1]);
 	j = 0;
@@ -77,6 +79,9 @@ int main(int argc, char ** argv) {
 				break;
 
 			case 'm':
+				if (params->flag_highlight)
+					dp_backtrack(obj);
+
 				print_header(j, params->flag_quiet, "DP TABLE:\n");
 				dp_print_table(obj);
 				break;

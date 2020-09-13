@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define RED   "\x1B[31m"
+#define RESET "\x1B[0m"
+
 // ----------------------------------------------------------------------------
 // Helper Functions                                                        {{{1
 // ----------------------------------------------------------------------------
@@ -32,6 +35,7 @@ typedef struct dp {
 	int         val_mismatch;
 	int         val_space;
 	int       **table;
+	char      **hl;
 	DP_ACTION **actions;
 } *DP;
 
@@ -39,6 +43,7 @@ typedef struct dp {
 DP   dp_init       (char *, char *, int, int, int);
 void dp_run_global (DP);
 void dp_clear      (DP);
+void dp_backtrack  (DP);
 void dp_print_table(DP);
 void dp_print_align(DP);
 void dp_free       (DP);

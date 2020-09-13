@@ -53,6 +53,10 @@ DP dp_init(char *s1, char *s2, int v1, int v2, int v3) {
 	for (i = 0; i < obj->w; i++)
 		obj->table[i] = (int *) calloc(obj->h, sizeof(int));
 
+	obj->hl = (char **) malloc(sizeof(char *) * obj->w);
+	for (i = 0; i < obj->w; i++)
+		obj->hl[i] = (char *) calloc(obj->h, sizeof(char));
+
 	obj->actions = (DP_ACTION **) malloc(sizeof(DP_ACTION *) * obj->w);
 	for (i = 0; i < obj->w; i++)
 		obj->actions[i] = (DP_ACTION *) calloc(obj->h, sizeof(DP_ACTION));
@@ -122,6 +126,44 @@ void dp_clear(DP obj) {
 		memset(obj->actions[i], 0, sizeof(DP_ACTION) * obj->h);
 }
 
+void dp_backtrack(DP obj) {
+	size_t i, j, sz;
+	char *res[2];
+
+	//Go from bottom right to top left;
+	sz = 0;
+	i = obj->w - 1;
+	j = obj->h - 1;
+
+	obj->hl[i][j] = 1;
+
+	while (i != 0 && j != 0) {
+		if (i < 0 || j < 0)
+			break;
+
+		switch(obj->actions[i][j]) {
+			case DP_NULL:
+				return;
+
+			case DP_MATCH:
+				i--, j--;
+				break;
+
+			case DP_SPACE1:
+				j--;
+				break;
+
+			case DP_SPACE2:
+				i--;
+				break;
+		}
+
+		obj->hl[i][j] = 1;
+
+		sz++;
+	}
+}
+
 void dp_print_table(DP obj) {
 	size_t i, j, w, tmp;
 
@@ -160,7 +202,10 @@ void dp_print_table(DP obj) {
 
 		for (i = 0; i < obj->w; i++) {
 			//Ditto
-			printf("%*d", w, obj->table[i][j]);
+			if (obj->hl[i][j])
+				printf(RED "%*d" RESET, w, obj->table[i][j]);
+			else
+				printf("%*d", w, obj->table[i][j]);
 		}
 
 		printf("\n");
