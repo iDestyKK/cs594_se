@@ -29,7 +29,8 @@ all: $(EXEC)
 # Executables                                                              {{{1
 # -----------------------------------------------------------------------------
 
-$(BIN)/globalign: $(OBJ)/globalign.o $(OBJ)/helper.o $(OBJ)/cnds.a
+$(BIN)/globalign: $(OBJ)/globalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
+                  $(OBJ)/dp.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(BIN)/end-gap-free-alignment: $(OBJ)/end-gap-free-alignment.o
@@ -58,7 +59,13 @@ $(OBJ)/end-gap-free-alignment.o: $(SRC)/end-gap-free-alignment.c
 $(OBJ)/local-alignment.o: $(SRC)/local-alignment.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+$(OBJ)/dp.o: $(SRC)/dp.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 $(OBJ)/helper.o: $(SRC)/helper.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/arg_parse.o: $(SRC)/arg_parse.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # -----------------------------------------------------------------------------
