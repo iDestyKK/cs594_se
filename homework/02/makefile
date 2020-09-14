@@ -19,11 +19,9 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/globalign              \
-	$(BIN)/localign               \
-	$(BIN)/egfalign               \
-	$(BIN)/end-gap-free-alignment \
-	$(BIN)/local-alignment
+	$(BIN)/globalign \
+	$(BIN)/localign  \
+	$(BIN)/egfalign
 
 all: $(EXEC)
 
@@ -41,12 +39,6 @@ $(BIN)/localign: $(OBJ)/localign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
 
 $(BIN)/egfalign: $(OBJ)/egfalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
                  $(OBJ)/dp.o $(OBJ)/cnds.a
-	$(CC) $(CFLAGS) -o $@ $^
-
-$(BIN)/end-gap-free-alignment: $(OBJ)/end-gap-free-alignment.o
-	$(CC) $(CFLAGS) -o $@ $^
-
-$(BIN)/local-alignment: $(OBJ)/local-alignment.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 # -----------------------------------------------------------------------------
@@ -67,12 +59,6 @@ $(OBJ)/localign.o: $(SRC)/localign.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/egfalign.o: $(SRC)/egfalign.c
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(OBJ)/end-gap-free-alignment.o: $(SRC)/end-gap-free-alignment.c
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(OBJ)/local-alignment.o: $(SRC)/local-alignment.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/dp.o: $(SRC)/dp.c
