@@ -170,6 +170,57 @@ void dp_run_local(DP obj) {
 	}
 }
 
+void dp_run_egfa(DP obj) {
+	size_t    i, j;
+	int       v, cost[3];
+	DP_ACTION a;
+
+	dp_clear(obj);
+
+	//Set default values
+	for (i = 0; i < obj->w; i++)
+		obj->table[i][0] = 0;
+
+	for (i = 0; i < obj->h; i++)
+		obj->table[0][i] = 0;
+
+	//Go through. This time, it's personal.
+	for (j = 1; j < obj->h; j++) {
+		for (i = 1; i < obj->w; i++) {
+			//Generate costs and choose the lowest one
+			cost[0] = obj->table[i - 1][j - 1];
+			cost[1] = obj->table[i    ][j - 1] + obj->val_space;
+			cost[2] = obj->table[i - 1][j    ] + obj->val_space;
+
+			//Make cost[0] worth more depending on matching
+			if (obj->s[0][j - 1] == obj->s[1][i - 1])
+				cost[0] += obj->val_match;
+			else
+				cost[0] += obj->val_mismatch;
+
+#if DEBUG == 1
+			printf("CONSIDER (%d, %d): %d %d %d", i, j, cost[0], cost[1], cost[2]);
+#endif
+
+			//v = max(cost[0], max(cost[1], cost[2]));
+			v = cost[0], a = DP_MATCH;
+
+			if (cost[1] > v)
+				v = cost[1], a = DP_SPACE1;
+
+			if (cost[2] > v)
+				v = cost[2], a = DP_SPACE2;
+
+#if DEBUG == 1
+			printf(" -> %d\n", v);
+#endif
+
+			obj->table  [i][j] = v;
+			obj->actions[i][j] = a;
+		}
+	}
+}
+
 void dp_clear(DP obj) {
 	size_t i;
 

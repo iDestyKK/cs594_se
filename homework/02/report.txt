@@ -153,7 +153,7 @@ PROBLEMS: (due 9/15)
      An executable, named "localign" will be compiled and stored in the "bin"
      directory. This is the executable we will use for this problem.
 
-     To run on X79493 and AY707088 to print out global alignment score and
+     To run on X79493 and AY707088 to print out local alignment score and
      alignment strings where +2 match, -1 for mismatch, -2 for a gap, run the
      following:
 
@@ -227,6 +227,27 @@ PROBLEMS: (due 9/15)
   4. Compute just the score of the optimal end-gap free alignment of the two
      mitochondrial sequences from HW #1: NC_012920 and AF254446 in a third
      program called "egfalign." Traceback and display will not be required.
+
+
+     The "make" instructions mentioned in Problem 2 will also compile the
+     program for this problem. In this case, it's the "egfalign", stored in the
+     "bin" directory post-compilation.
+
+
+     An executable, named "egfalign" will be compiled and stored in the "bin"
+     directory. This is the executable we will use for this problem.
+
+     To run on NC_012920 and AF254446 to print out score where +2 match, -1 for
+     mismatch, -2 for a gap, run the following:
+
+         UNIX> ./bin/egfalign -a data/NC_012920.fasta data/AF254446.fasta 2 -1 -2
+
+
+     The program is constructed to where you can specify what you want to show.
+     Simply run it without arguments to see what options you have available.
+
+
+     For simplicity, the local alignment score is 620.
 
 
 

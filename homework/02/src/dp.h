@@ -43,6 +43,7 @@ typedef struct dp {
 DP   dp_init       (char *, char *, int, int, int);
 void dp_run_global (DP);
 void dp_run_local  (DP);
+void dp_run_egfa   (DP);
 void dp_clear      (DP);
 void dp_backtrack  (DP, size_t, size_t, size_t);
 void dp_print_table(DP);
