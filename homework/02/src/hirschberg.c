@@ -10,6 +10,11 @@
  *     utilised here. So the DP table and its helper functions must be
  *     rewritten. They are present in this file. "dp.h" isn't included.
  *
+ *     The directions don't state to include a string alignment. Only a score.
+ *     So when we are computing the score, we can cheat by simply keeping track
+ *     of the largest value encountered while running End-Gap Free Alignment on
+ *     the 2 rows.
+ *
  * Author:
  *     Clara Nguyen
  */
@@ -18,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #include "arg_parse.h"
 #include "helper.h"
@@ -99,9 +105,8 @@ typedef struct dp {
 
 //Function Prototypes
 DP   dp_init       (char *, char *, int, int, int);
-void dp_run_egfa   (DP);
+int  dp_run_egfa   (DP);
 void dp_clear      (DP);
-void dp_print_align(DP, size_t, size_t, size_t);
 void dp_free       (DP);
 
 // ----------------------------------------------------------------------------
@@ -158,12 +163,14 @@ DP dp_init(char *s1, char *s2, int v1, int v2, int v3) {
  * Runs FASTA data through end-gap free alignment.
  */
 
-void dp_run_egfa(DP obj) {
+int dp_run_egfa(DP obj) {
 	size_t    i, j;
-	int       v, cost[3];
+	int       v, cost[3], mval;
 	DP_ACTION a;
 
 	dp_clear(obj);
+
+	mval = INT_MIN;
 
 	/*
 	 * Very first row is just... well... default values lol. But let's set the
@@ -171,7 +178,7 @@ void dp_run_egfa(DP obj) {
 	 */
 
 	for (i = 0; i < obj->w; i++)
-		obj->table[i][1] = obj->val_space * i;
+		obj->table[i][1] = 0;
 
 	//Go through. This time, it's even more than personal.
 	for (j = 1; j < obj->h; j++) {
@@ -181,7 +188,7 @@ void dp_run_egfa(DP obj) {
 			obj->table[i][0] = obj->table[i][1];
 
 		//First value is default.
-		obj->table[0][1] = obj->val_space * j;
+		obj->table[0][1] = 0;
 
 		for (i = 1; i < obj->w; i++) {
 			//Generate costs and choose the lowest one
@@ -204,10 +211,15 @@ void dp_run_egfa(DP obj) {
 			if (cost[2] > v)
 				v = cost[2], a = DP_SPACE2;
 
+			//Update the maximum value
+			mval = max(mval, v);
+
 			obj->table  [i][1] = v;
 			obj->actions[i][1] = a;
 		}
 	}
+
+	return mval;
 }
 
 /*
@@ -224,148 +236,6 @@ void dp_clear(DP obj) {
 
 	for (i = 0; i < obj->w; i++)
 		memset(obj->actions[i], 0, sizeof(DP_ACTION) * 2);
-}
-
-/*
- * dp_print_align                                                          {{{2
- *
- * Prints out the alignment strings based on table data. Blanks will show as
- * "-" to force alignment of the strings visually.
- */
-
-void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) {
-	int i, j, force, dec_amt;
-	size_t sz;
-	char *res[2];
-
-	//Go from bottom right to top left;
-	sz = 0;
-	force = 0;
-	i = start_x;
-	j = start_y;
-
-	while (!force) {
-		if (!force_start) {
-			if (i <= 0 || j <= 0)
-				break;
-		}
-
-		switch(obj->actions[i][j]) {
-			case DP_NULL:
-				force = 1;
-				break;
-
-			case DP_MATCH:
-				i--, j--;
-				break;
-
-			case DP_SPACE1:
-				j--;
-				break;
-
-			case DP_SPACE2:
-				i--;
-				break;
-		}
-
-		if (i < 0 || j < 0)
-			break;
-
-		sz++;
-	}
-
-	//If at a null spot, we can try to approach the top-left corner
-	if (i != -1 && j != -1 && force_start == 1) {
-		dec_amt = 1;
-
-		//Go left
-		if (i > 0) {
-			for (; i > 0; i--, sz++);
-			//dec_amt++;
-		}
-
-		//Go up
-		if (j > 0) {
-			for (; j > 0; j--, sz++);
-			//dec_amt++;
-		}
-
-		//Deduct accordingly
-		sz -= dec_amt;
-	}
-
-	//Create strings and do it again
-	res[0] = (char *) calloc(sz + 1, sizeof(char));
-	res[1] = (char *) calloc(sz + 1, sizeof(char));
-
-	force = 0;
-	i = start_x;
-	j = start_y;
-
-	while (!force) {
-		/*
-		if (i <= 0 || j <= 0)
-			break;
-		*/
-
-		sz--;
-
-#if DEBUG == 1
-		printf(
-			"AT (%d, %d) %c %c (%d): %d\n",
-			i, j,
-			obj->s[0][j - 1], obj->s[1][i - 1],
-			obj->table[i][j],
-			obj->actions[i][j]
-		);
-#endif
-
-		switch(obj->actions[i][j]) {
-			case DP_NULL:
-				force = 1;
-				break;
-
-			case DP_MATCH:
-				res[0][sz] = obj->s[0][j - 1];
-				res[1][sz] = obj->s[1][i - 1];
-				i--, j--;
-				break;
-
-			case DP_SPACE1:
-				res[0][sz] = obj->s[0][j - 1];
-				res[1][sz] = '-';
-				j--;
-				break;
-
-			case DP_SPACE2:
-				res[0][sz] = '-';
-				res[1][sz] = obj->s[1][i - 1];
-				i--;
-				break;
-		}
-
-		if (i < 0 || j < 0)
-			break;
-	}
-
-	//Ditto. If at a null spot, we can try to approach the top-left corner
-	if (i != -1 && j != -1 && force_start == 1) {
-		//Go left
-		for (; i > 0; i--, sz--) {
-			res[0][sz] = '-';
-			res[1][sz] = obj->s[1][i - 1];
-		}
-
-		//Go up
-		for (; j > 0; j--, sz--) {
-			res[0][sz] = obj->s[0][j - 1];
-			res[1][sz] = '-';
-		}
-	}
-
-	printf("%s\n%s\n", res[0], res[1]);
-	free(res[0]);
-	free(res[1]);
 }
 
 /*
@@ -402,7 +272,7 @@ void dp_free(DP obj) {
 
 int main(int argc, char ** argv) {
 	size_t i, j, x, y, sz;
-	int maxx, maxy;
+	int maxv;
 	CN_STRING f1, f2;
 	DP obj;
 	PARAM_T params;
@@ -411,9 +281,8 @@ int main(int argc, char ** argv) {
 	if (argc != 7) {
 		fprintf(
 			stderr,
-			"usage: %s -aqs file1 file2 match_val mismatch_val gap_val\n\n"
+			"usage: %s -qs file1 file2 match_val mismatch_val gap_val\n\n"
 			"Parameter Information:\n"
-			"\t-a\tDisplay strings post-alignment\n"
 			"\t-q\tQuiet(er). Stops printing headers before each section\n"
 			"\t-s\tDisplay the end-gap free alignment score\n"
 			"flag)\n"
@@ -440,36 +309,15 @@ int main(int argc, char ** argv) {
 	);
 
 	//Ok... do it.
-	dp_run_egfa(obj);
+	maxv = dp_run_egfa(obj);
 
-	//Ok, print out whatever was specified
 	sz = strlen(argv[1]);
-	j = 0;
-
-	//Search for the maximum value in the table
-	/*
-	maxx = 0;
-	maxy = 0;
-	for (x = 0; x < obj->w; x++) {
-		for (y = 0; y < obj->h; y++) {
-			if (obj->table[x][y] > obj->table[maxx][maxy]) {
-				maxx = x;
-				maxy = y;
-			}
-		}
-	}
-	*/
 
 	for (i = 0; i < sz; i++) {
 		switch (argv[1][i]) {
-			case 'a':
-				print_header(j, params->flag_quiet, "STRING ALIGNMENT:\n");
-				dp_print_align(obj, maxx, maxy, 0);
-				break;
-
 			case 's':
 				print_header(j, params->flag_quiet, "ALIGNMENT SCORE:\n");
-				printf("%d\n", obj->table[obj->w - 1][1]);
+				printf("%d\n", maxv);
 				break;
 		}
 	}
