@@ -258,6 +258,33 @@ PROBLEMS: (due 9/15)
      (3 points).
 
 
+     X79493:
+         Matches with itself (X79493) perfectly. Matches with NM_079889.3 99%
+         (Drosophila melanogaster eyeless (ey), transcript variant A, mRNA).
+         With NM_079889.3, length is 3282 and has a handful of gaps when
+         aligned with X79493 but mostly similar.
+
+
+     AY707088:
+         Matches with itself (AY707088) perfectly. In fact, it matches with the
+         top 14 results 100%. They are all human/homosapien paired box 6
+         (or similar) variants with the same length and score. The next one is
+         a 99% query cover but 100% identical: DQ891436.2, aka Synthetic
+         construct clone IMAGE:100004066; FLH176929.01X; RZPDo839B01124D paired
+         box gene 6 (aniridia, keratitis) (PAX6) gene, encodes complete
+         protein. It has a length of 1309. When viewing the alignment, all
+         characters present in AY707088 also are present in DQ891436.2,
+         resembling a perfect alignment. Though, the latter is larger so...
+
+
+     In terms of how it relates to the result from #3, well I don't see these
+     in each other's search results (e.g. looking for AY707088 in X79493's
+     blast gives no results, and vice versa). Looking at the result from #3,
+     this makes sense. They have a pretty good alignment somewhere but don't
+     match around 100%. Plus, the score is nowhere close to the ones compared
+     in the database that were BLASTed.
+
+
 
   6. Download the "mystery" sequence from the course website. Report its BLAST
      hits using blastn and blastx at the NCBI website in your writeup (1 point
