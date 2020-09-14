@@ -20,6 +20,7 @@ CNDS = $(LIB)/cnds
 # Executables
 EXEC = \
 	$(BIN)/globalign              \
+	$(BIN)/localign               \
 	$(BIN)/end-gap-free-alignment \
 	$(BIN)/local-alignment
 
@@ -31,6 +32,10 @@ all: $(EXEC)
 
 $(BIN)/globalign: $(OBJ)/globalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
                   $(OBJ)/dp.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BIN)/localign: $(OBJ)/localign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
+                 $(OBJ)/dp.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(BIN)/end-gap-free-alignment: $(OBJ)/end-gap-free-alignment.o
@@ -51,6 +56,9 @@ $(OBJ)/cnds.a: $(OBJ)/cn_string.o $(OBJ)/cn_cmp.o $(OBJ)/cn_map.o
 # -----------------------------------------------------------------------------
 
 $(OBJ)/globalign.o: $(SRC)/globalign.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/localign.o: $(SRC)/localign.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/end-gap-free-alignment.o: $(SRC)/end-gap-free-alignment.c

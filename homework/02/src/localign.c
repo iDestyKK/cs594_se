@@ -24,7 +24,8 @@
 // ----------------------------------------------------------------------------
 
 int main(int argc, char ** argv) {
-	size_t i, j, sz;
+	size_t i, j, x, y, sz;
+	int maxx, maxy;
 	CN_STRING f1, f2;
 	DP obj;
 	PARAM_T params;
@@ -35,7 +36,7 @@ int main(int argc, char ** argv) {
 			stderr,
 			"usage: %s -amqst file1 file2 match_val mismatch_val gap_val\n\n"
 			"Parameter Information:\n"
-			"\t-a\tDisplay the global alignment\n"
+			"\t-a\tDisplay the local alignment\n"
 			"\t-m\tDisplay the DP table\n"
 			"\t-q\tQuiet(er). Stops printing headers before each section\n"
 			"\t-s\tDisplay strings post-alignment\n"
@@ -64,22 +65,34 @@ int main(int argc, char ** argv) {
 	);
 
 	//Ok... do it.
-	dp_run_global(obj);
+	dp_run_local(obj);
 
 	//Ok, print out whatever was specified
 	sz = strlen(argv[1]);
 	j = 0;
 
+	//Search for the maximum value in the table
+	maxx = 0;
+	maxy = 0;
+	for (x = 0; x < obj->w; x++) {
+		for (y = 0; y < obj->h; y++) {
+			if (obj->table[x][y] > obj->table[maxx][maxy]) {
+				maxx = x;
+				maxy = y;
+			}
+		}
+	}
+
 	for (i = 0; i < sz; i++) {
 		switch (argv[1][i]) {
 			case 'a':
-				print_header(j, params->flag_quiet, "GLOBAL ALIGNMENT:\n");
-				printf("%d\n", obj->table[obj->w - 1][obj->h - 1]);
+				print_header(j, params->flag_quiet, "LOCAL ALIGNMENT:\n");
+				printf("%d\n", obj->table[maxx][maxy]);
 				break;
 
 			case 'm':
 				if (params->flag_highlight)
-					dp_backtrack(obj, obj->w - 1, obj->h - 1, 1);
+					dp_backtrack(obj, maxx, maxy, 0);
 
 				print_header(j, params->flag_quiet, "DP TABLE:\n");
 				dp_print_table(obj);
@@ -87,7 +100,7 @@ int main(int argc, char ** argv) {
 
 			case 's':
 				print_header(j, params->flag_quiet, "STRING ALIGNMENT:\n");
-				dp_print_align(obj, obj->w - 1, obj->h - 1, 1);
+				dp_print_align(obj, maxx, maxy, 0);
 				break;
 		}
 	}

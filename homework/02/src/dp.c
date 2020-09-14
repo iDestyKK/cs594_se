@@ -116,6 +116,60 @@ void dp_run_global(DP obj) {
 	}
 }
 
+void dp_run_local(DP obj) {
+	size_t    i, j;
+	int       v, cost[3];
+	DP_ACTION a;
+
+	dp_clear(obj);
+
+	//Set default values
+	for (i = 0; i < obj->w; i++)
+		obj->table[i][0] = 0;
+
+	for (i = 0; i < obj->h; i++)
+		obj->table[0][i] = 0;
+
+	//Go through. This time, it's personal.
+	for (j = 1; j < obj->h; j++) {
+		for (i = 1; i < obj->w; i++) {
+			//Generate costs and choose the lowest one
+			cost[0] = obj->table[i - 1][j - 1];
+			cost[1] = obj->table[i    ][j - 1] + obj->val_space;
+			cost[2] = obj->table[i - 1][j    ] + obj->val_space;
+
+			//Make cost[0] worth more depending on matching
+			if (obj->s[0][j - 1] == obj->s[1][i - 1])
+				cost[0] += obj->val_match;
+			else
+				cost[0] += obj->val_mismatch;
+
+#if DEBUG == 1
+			printf("CONSIDER (%d, %d): %d %d %d", i, j, cost[0], cost[1], cost[2]);
+#endif
+
+			//v = max(cost[0], max(cost[1], cost[2]));
+			v = cost[0], a = DP_MATCH;
+
+			if (cost[1] > v)
+				v = cost[1], a = DP_SPACE1;
+
+			if (cost[2] > v)
+				v = cost[2], a = DP_SPACE2;
+
+			if (v < 0)
+				v = 0;
+
+#if DEBUG == 1
+			printf(" -> %d\n", v);
+#endif
+
+			obj->table  [i][j] = v;
+			obj->actions[i][j] = a;
+		}
+	}
+}
+
 void dp_clear(DP obj) {
 	size_t i;
 
@@ -126,24 +180,22 @@ void dp_clear(DP obj) {
 		memset(obj->actions[i], 0, sizeof(DP_ACTION) * obj->h);
 }
 
-void dp_backtrack(DP obj) {
-	size_t i, j, sz;
+void dp_backtrack(DP obj, size_t start_x, size_t start_y, size_t force_start) {
+	int i, j, force;
 	char *res[2];
 
 	//Go from bottom right to top left;
-	sz = 0;
-	i = obj->w - 1;
-	j = obj->h - 1;
+	force = 0;
+	i = start_x;
+	j = start_y;
 
 	obj->hl[i][j] = 1;
 
-	while (i != 0 && j != 0) {
-		if (i < 0 || j < 0)
-			break;
-
+	while (!force) {
 		switch(obj->actions[i][j]) {
 			case DP_NULL:
-				return;
+				force = 1;
+				break;
 
 			case DP_MATCH:
 				i--, j--;
@@ -158,9 +210,23 @@ void dp_backtrack(DP obj) {
 				break;
 		}
 
-		obj->hl[i][j] = 1;
+		if (i < 0 || j < 0)
+			break;
 
-		sz++;
+		obj->hl[i][j] = 1;
+	}
+
+	//If at a null spot, we can try to approach the top-left corner
+	if (i != -1 && j != -1 && force_start == 1) {
+		//Go left
+		for (; i > 0; i--)
+			obj->hl[i][j] = 1;
+
+		//Go up
+		for (; j > 0; j--)
+			obj->hl[i][j] = 1;
+
+		obj->hl[0][0] = 1;
 	}
 }
 
@@ -212,22 +278,30 @@ void dp_print_table(DP obj) {
 	}
 }
 
-void dp_print_align(DP obj) {
-	size_t i, j, sz;
+void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) {
+	int i, j, force, dec_amt;
+	size_t sz;
 	char *res[2];
 
 	//Go from bottom right to top left;
 	sz = 0;
-	i = obj->w - 1;
-	j = obj->h - 1;
+	force = 0;
+	i = start_x;
+	j = start_y;
 
-	while (i != 0 && j != 0) {
-		if (i < 0 || j < 0)
-			break;
+	while (!force) {
+		if (!force_start) {
+			if (i <= 0 || j <= 0)
+				break;
+		}
+		else
+			if (i < 0 || j < 0)
+				break;
 
 		switch(obj->actions[i][j]) {
 			case DP_NULL:
-				return;
+				force = 1;
+				break;
 
 			case DP_MATCH:
 				i--, j--;
@@ -245,16 +319,38 @@ void dp_print_align(DP obj) {
 		sz++;
 	}
 
+	//If at a null spot, we can try to approach the top-left corner
+	if (i != -1 && j != -1 && force_start == 1) {
+		dec_amt = 1;
+
+		//Go left
+		if (i > 0) {
+			for (; i > 0; i--, sz++);
+			dec_amt++;
+		}
+
+		//Go up
+		if (j > 0) {
+			for (; j > 0; j--, sz++);
+			dec_amt++;
+		}
+
+		//Deduct accordingly
+		sz -= dec_amt;
+	}
+
 	//Create strings and do it again
 	res[0] = (char *) calloc(sz + 1, sizeof(char));
 	res[1] = (char *) calloc(sz + 1, sizeof(char));
 
-	i = obj->w - 1;
-	j = obj->h - 1;
+	force = 0;
+	i = start_x;
+	j = start_y;
 
-	while (i != 0 && j != 0) {
-		if (i < 0 || j < 0)
+	while (!force) {
+		if (i <= 0 || j <= 0)
 			break;
+
 		sz--;
 
 #if DEBUG == 1
@@ -269,7 +365,8 @@ void dp_print_align(DP obj) {
 
 		switch(obj->actions[i][j]) {
 			case DP_NULL:
-				return;
+				force = 1;
+				break;
 
 			case DP_MATCH:
 				res[0][sz] = obj->s[0][j - 1];
@@ -288,6 +385,21 @@ void dp_print_align(DP obj) {
 				res[1][sz] = obj->s[1][i - 1];
 				i--;
 				break;
+		}
+	}
+
+	//Ditto. If at a null spot, we can try to approach the top-left corner
+	if (i != -1 && j != -1 && force_start == 1) {
+		//Go left
+		for (; i > 0; i--, sz--) {
+			res[0][sz] = '-';
+			res[1][sz] = obj->s[1][i - 1];
+		}
+
+		//Go up
+		for (; j > 0; j--, sz--) {
+			res[0][sz] = obj->s[0][j - 1];
+			res[1][sz] = '-';
 		}
 	}
 
