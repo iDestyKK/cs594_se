@@ -31,7 +31,7 @@ PROBLEMS: (due 9/15)
      alignment strings where +2 match, -1 for mismatch, -2 for a gap, run the
      following:
 
-         UNIX> ./bin/globalign -as data/X79493.fasta data/AY707088.fasta 2 -1 -2
+         UNIX> ./bin/globalign -sa data/X79493.fasta data/AY707088.fasta 2 -1 -2
 
 
      The program is constructed to where you can specify what you want to show.
@@ -157,7 +157,7 @@ PROBLEMS: (due 9/15)
      alignment strings where +2 match, -1 for mismatch, -2 for a gap, run the
      following:
 
-         UNIX> ./bin/localign -as data/X79493.fasta data/AY707088.fasta 2 -1 -2
+         UNIX> ./bin/localign -sa data/X79493.fasta data/AY707088.fasta 2 -1 -2
 
 
      The program is constructed to where you can specify what you want to show.
@@ -240,7 +240,7 @@ PROBLEMS: (due 9/15)
      To run on NC_012920 and AF254446 to print out score where +2 match, -1 for
      mismatch, -2 for a gap, run the following:
 
-         UNIX> ./bin/egfalign -a data/NC_012920.fasta data/AF254446.fasta 2 -1 -2
+         UNIX> ./bin/egfalign -s data/NC_012920.fasta data/AF254446.fasta 2 -1 -2
 
 
      The program is constructed to where you can specify what you want to show.
