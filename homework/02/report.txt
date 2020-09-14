@@ -1,0 +1,355 @@
+SUBMISSION DETAILS
+
+  Before we begin, this submission contains several directories. For the sake
+  of simplicity, "src" is the source code to the programs this assignment
+  requests. "lib" contains CNDS (Clara Nguyen's Data Structures), which is a
+  collection of C libraries written entirely by me. All code here (libraries or
+  not) is entirely my own work.
+
+  The fasta data files are stored in "data". My apologies if storing them in a
+  directory causes any problems.
+
+  There is a makefile supplied with this submission. To compile every program,
+  simply run "make". Every executable will be put into the "bin" directory.
+
+  This is written in C and adheres to the GNU89 standard (C89 with GNU
+  extensions). Compilation was tested on UTK's EECS Hydra machines.
+
+
+PROBLEMS: (due 9/15)
+
+  1. Download the two genes mentioned in Problem #1 in Section 3.9 (X79493 and
+     AY707088) from fruit fly and human, respectively.
+
+
+     ok
+
+
+
+  2. Write a program called "globalign" to compute the global alignment score
+     of the two sequences above using the following parameters: +2 for a match,
+     -1 for a mismatch, and -2 for a gap. Perform the traceback and display the
+     alignment in a user-friendly format. Please place the source code in your
+     submission, and tell the instructor how to compile and run it in an
+     accompanying write up. (10 points)
+
+
+     To compile, simply run the following command in the same directory as the
+     supplied "makefile":
+
+         UNIX> make
+
+
+
+     An executable, named "globalign" will be compiled and stored in the "bin"
+     directory. This is the executable we will use for this problem.
+
+     To run on X79493 and AY707088 to print out global alignment score and
+     alignment strings where +2 match, -1 for mismatch, -2 for a gap, run the
+     following:
+
+         UNIX> ./bin/globalign -sa data/X79493.fasta data/AY707088.fasta 2 -1 -2
+
+
+     The program is constructed to where you can specify what you want to show.
+     Simply run it without arguments to see what options you have available.
+
+
+     To show traceback, there is a colourful option added in. Run the
+     following command:
+
+         UNIX> ./bin/globalign -mt data/X79493.fasta data/AY707088.fasta 2 -1 -2 | less -R
+
+     The traceback will be coloured in red. Be sure your terminal allows ANSI
+     escape sequences to perform the colouring. If you want a normal table
+     without colouring, simply do "-m" instead of "-mt".
+
+
+     For simplicity, the global alignment score is -1016.
+
+     The string alignments are huge (as expected), but here they are:
+
+         TTCGCACGGCGTGCGTTTGGCTGAACACAGCAGTCTCTTGGCTAAAGCTTTCATGAGCAGTGCATGTAAT
+         AAAAACTGAGATCCAACTATGTTTACATTGCAACCAACTCCAACTGCTATAGGCACCGTGGTTCCCCCAT
+         GGTCAGCGGGAACATTGATAGAGCGCCTGCCGTCTTTAGAAGACATGGCTCACAAGGGTCACAGTGGAGT
+         AAATCAGCTGGGTGGCGTTTTTGTTGGAGGAAGGCCTTTGCCAGATTCAACACGGCAAAAAATTGTCGAA
+         CTGGCACATTCTGGAGCTCGGCCATGTGATATTTCTCGAATTCTGCAAGTATCAAATGGATGTGTGAGCA
+         AAATTCTCGGGAGGTATTATGAAACAGGAAGCATACGACCACGTGCTATCGGAGGATCCAAGCCACGTGT
+         GGCCACAGCCGAAGTCGTTAGCAAAATTTCGCAGTACAAACGCGAGTGTCCTAGCATATTTGCTTGGGAA
+         ATTCGGGATAGATTACTTCAGGAGAACGTTTGTACTAACGATAATATACCAAGTGTGTCCTCAATAAACC
+         GTGTATTGAGAAACTTGGCTGCGCAAAAGGAGCAGCAAAGCACGGGATCCGGGAGCTCCAGCACATCCGC
+         CGGCAACTCAATCAGCGCAAAAGTGTCTGTCAGCATCGGTGGCAACGTGAGCAATGTGGCAAGCGGATCG
+         AGAGGCACGTTGAGCTCTTCCACCGATCTTATGCAGACAGCCACTCCTCTTAACTCTTCGGAAAGCGGTG
+         GCGCAACGAACTCCGGGGAGGGTAGTGAACAGGAGGCGATTTACGAGAAGCTTCGGCTGTTAAATACTCA
+         GCACGCTGCAGGACCAGGACCACTGGAGCCTGCCAGAGCAGCGCCCTTGGTAGGTCAATCACCCAACCAC
+         CTAGGAACCCGATCCAGCCACCCCCAGCTGGTGCACGGTAACCATCAGGCACTACAGCAGCATCAACAGC
+         AGAGCTGGCCGCCCCGTCACTATTCCGGATCTTGGTACCCCACCTCTCTTAGCGAAATACCCATCTCATC
+         GGCTCCCAATATCGCATCCGTTACGGCGTATGCATCAGGACCTTCACTTGCTCACTCACTGAGTCCACCC
+         AACGACATCAAAAGCCTGGCCAGTATCGGTCACCAGAGAAACTGCCCCGTTGCAACGGAGGACATACATT
+         TAAAAAAAGAACTTGATGGTCATCAGTCCGATGAAACGGGCTCCGGTGAAGGTGAAAACTCCAATGGTGG
+         CGCTTCAAATATAGGAAACACTGAGGATGATCAAGCTCGGCTCATACTAAAAAGAAAGTTGCAACGCAAT
+         CGAACATCTTTCACGAACGACCAGATAGACAGTCTTGAAAAAGAGTTTGAACGAACACACTATCCAGATG
+         TTTTTGCCCGCGAACGTTTGGCTGGAAAGATTGGGTTGCCAGAGGCAAGAATTCAGGTTTGGTTCTCAAA
+         CCGTCGAGCAAAATGGCGTCGCGAGGAGAAGCTGCGAAACCAGCGAAGAACACCAAATTCCACAGGAGCT
+         AGTGCAACTTCTTCCTCTACATCGGCAACCGCCTCTTTGACTGACAGCCCTAACAGCCTAAGTGCTTGTT
+         CCTCGCTGCTGTCCGGATCAGCTGGGGGTCCCTCAGTCAGTACCATTAATGGCTTATCGTCTCCAAGCAC
+         ATTGTCTACTAATGTCAATGCTCCAACGCTTGGCGCTGGGATCGATAGCTCTGAAAGCCCAACACCAATC
+         CCGCACATTCGGCCTAGCTGCACCTCTGACAATGACAATGGTCGTCAAAGTGAAGATTGCAGAAGAGTTT
+         GTTCTCCATGCCCACTTGGCGTTGGCGGGCATCAAAATACTCATCATATCCAGAGCAATGGTCACGCCCA
+         AGGTCATGCACTTGTTCCTGCCATTTCGCCACGACTCAATTTTAATAGTGGTAGTTTCGGCGCGATGTAC
+         TCCAACATGCATCATACGGCGTTATCCATGAGCGATTCATATGGGGCGGTTACGCCGATTCCGAGCTTTA
+         ACCACTCAGCTGTCGGTCCGCTGGCTCCGCCATCGCCAATACCGCAACAGGGCGATCTTACCCCTTCCTC
+         GTTATATCCGTGCCACATGACCCTACGACCCCCTCCGATGGCTCCCGCTCACCATCACATCGTGCCGGGT
+         GACGGTGGCAGACCTGCGGGCGTTGGCCTAGGCAGTGGCCAATCTGCGAATTTGGGAGCAAGCTGCAGCG
+         GATCGGGATACGAAGTGCTATCTGCCTACGCGTTGCCACCGCCCCCTATGGCGTCGAGCTCTGCTGCTGA
+         TTCAAGCTTCTCAGCCGCGTCCAGTGCCAGCGCTAATGTGACCCCACATCACACCATAGCCCAAGAATCA
+         TGCCCCTCTCCGTGTTCAAGCGCGAGCCACTTTGGAGTTGCTCACAGTTCTGGGTTTTCGTCCGACCCGA
+         TTTCACCGGCTGTATCTTCGTATGCACATATGAGCTACAATTACGCGTCGTCCGCTAACACCATGACGCC
+         TTCCTCCGCCAGCGGCACATCAGCACACGTGGCCCCGGGAAAACAACAGTTCTTCGCCTCCTGTTTCTAC
+         TCACCGTGGGTCTAGGAACAGACTGGCGATTTGAGCAGAGAAGCACTGCGAAAGGACTATTTACATAGTT
+         GAATGTATATCTAAAGGAGGCCATAATAAATCGAATTTACATATCTCTTGAAAAATAATGGAGGTTGTAG
+         AAAAATACATTTGTATGTATAAATTATATAGTTCCGCCCATTAAATCCAATCTATAGTGTAGAATAATTG
+         GTGTAAATTAAATGATATAATTTTGACAAATAAAAAAAAAAAAAAAAA
+
+
+         -----A-----------T-GC---AGA-A-CAG-----T--C---A-----C---AGC-G-G-A-G----
+         ------T--G-----A--A----T-CA--G-------CT----C-G--GT--G----GT-G-T----CTT
+         TGTCAACGGG--C-------G-GCCACTG-C--C----G--GAC-T--C-CAC------C-C-G-GCAG-
+         --A--A----------G--ATTG-T--A-G-A-G-C--T---AG-CTC-ACA--GC--------G--G--
+         --GGC-C---C--G-GC-C-G---TGCGACATTTCCCGAATTCTGCAGGTGTCCAACGGATGTGTGAGTA
+         AAATTCTGGGCAGGTATTACG----A-G-A-C-T--G---GC-T-CCATC--A-GA--C---CCA---G-
+         GG-CA-A-TCG--GT-G---G-------T---AGT--AAAC-CGA--G----AG--TA---GC----G--
+         A--C---------T-C--C---AGAA-G-TTGTA--AGC-A-AA-AT----A----G-CC-C-----A--
+         --GTA-T----AA-------GCG-----GGAG-TGC----C-C--G-TCC---ATCT-TTG--C-T-TG-
+         -GG--A---AATC--CG----A------G--A-CA------G--A--TTA-C--TGT--C---C-GA--G
+         -G-GG---G-T---CT-GT--ACC-A----A--C-GATA---A-----CAT-A--C--C---AAGC-GT-
+         --G--TC--A-T-C----A----A-TAAACA-GA---GTTCTTCG-CAA-CCT-GGC-------TA-GC-
+         G-A-AAAGCA--A-CA-G---A-TGG-G-C-G-CAGA-C-G-G--CAT-GTA--T-GAT-----AA--A-
+         CT---AA---G-----G--------A-----T-----GT-----T---G-A--AC-G--G--------GC
+         AGA-----CCG----G--A--A-----G--C-TGG----------------G-G-------CA-C-C--C
+         -G--CCC----T-G-----GTT---G-GTAT-C--C-GG----------G------GACT---T------
+         --CG---------G--T-GCCAG----GG----C-----AA-----CC--T---AC----G-----C---
+         ---------AA---GATGG-C-T--G-CC-A-GCAA-------CAG-GAA-G-G---------A-GG-GG
+         -G----------A-G----A--GA--AT-ACCAA-CT---C-CAT-C---------AGTTCCAACG-GA-
+         -GAAGA---TTCA-G-ATG---AG---G-C--TC------AA-A---TG--CG-----ACT-T-CAGCTG
+         ---AAG--CG-GAA------GCTGCAAAGA----------A-A---TAGAA--CA----TCCTT-T---A
+         -C--C---C--AA---------GAGCA-AA--T-TG-----A--G--G--C-CC----T------G-G--
+         A--G--A-----------A-A---G--A--G----TTTGA--G--AG----AAC--CC--A----TT-AT
+         CC-AGATG-TGT-----T----T----G--CC-C-G--AG----A--AA--G---A----CT---AG--C
+         A--G-C--C-AA----AA---T---A-------------GATC--TA-C-CTG-AAG--C-A-A-GAAT-
+         ----ACA---GG--TA--TG-------G----T-----T--T--TC----T--A-A-T-C-GAAG-G---
+         G----CCA-----A-AT-G-G-AGAAGAG-AAGAAAA-ACTGAGGA-AT-CAGAG-AA--G--A----C-
+         AGG-C---CA---------G-CA-----ACAC-AC-C--------TAGTCATA--TT---C-C----TA-
+         T----CA-GCA--GTA----GTT-T-C---AGC-A--C--------C----A----G--T----G-TCT-
+         ACCA---A---------CCAAT---T---CCA----C-A-ACC-C-AC----C-A-C--A-------C-C
+         GGT-T-TCC-T--C-C-T-----T-C-A-------C-AT--CT---G----GC-TC-CA---T-----GT
+         -----TGG--G--C--CGAAC---AGAC-A--CA---GCC-CTC-AC-AA------A-C-ACCTACAGC-
+         G--C----T-C----TGC---C-GCCTATGC----CCAGCTTCACC-ATGGCAAATAAC-CTGC--CT-A
+         TGCAA-C--C-C--CC-AGTCC----CCAGC-C--A---GACCTC-C-TCATA-C-T---CC-TG---CA
+         TG---CT-GCC-----C-A-C-C-AGCC-C-TTCG-G-TG---A-A----T-GG-----G--CG----G-
+         ----A---G-T-TA---T-G-AT--AC-------CTAC----AC-C--C--CC-C---CA-CAT-A----
+         ----T--G-CA---G---A-CA-CACA--T--------G-----AACAG-TC--AG----C-----C-A-
+         --A---T--G----GG--C--AC---C----T---C-G-G--GCAC--C------AC---TT-C------
+         ------A-A-C---AGGA---C--------TC--ATTT-C----C-C----------CT---GG-TGT-G
+         -----T-CA---G--T-T-CCAGTT-CA-AGTT---CCC-GGAAGT-GAA-C------CT-G-AT-A-T-
+         GTCTCAA-T-ACTG-GCCAAGATT-AC-AGT---------------AA
+
+
+
+  3. Compute the local alignment between X79493 and AY707088 using a modified
+     program "localign". Perform the traceback and display the alignment in a
+     userfriendly format. Submit your code with instructions on how to run and
+     compile. Discuss in your write up how the local alignment compares to the
+     global alignment from #2 (10 points).
+
+
+     The "make" instructions mentioned in Problem 2 will also compile the
+     program for this problem. In this case, it's the "localign", stored in the
+     "bin" directory post-compilation.
+
+
+     An executable, named "localign" will be compiled and stored in the "bin"
+     directory. This is the executable we will use for this problem.
+
+     To run on X79493 and AY707088 to print out local alignment score and
+     alignment strings where +2 match, -1 for mismatch, -2 for a gap, run the
+     following:
+
+         UNIX> ./bin/localign -sa data/X79493.fasta data/AY707088.fasta 2 -1 -2
+
+
+     The program is constructed to where you can specify what you want to show.
+     Simply run it without arguments to see what options you have available.
+
+
+     To show traceback, there is a colourful option added in. Run the
+     following command:
+
+         UNIX> ./bin/localign -mt data/X79493.fasta data/AY707088.fasta 2 -1 -2 | less -R
+
+     The traceback will be coloured in red. Be sure your terminal allows ANSI
+     escape sequences to perform the colouring. If you want a normal table
+     without colouring, simply do "-m" instead of "-mt".
+
+
+     For simplicity, the local alignment score is 820.
+
+
+     The string alignments are huge (as expected), but here they are:
+
+         ATGGCTCACAAGGGTCACAGTGGAGTAAATCAGCTGGGTGGCGTTTTTGTTGGAGGAAGGCCTTTGCCAG
+         ATTCAACACGGCAAAAAATTGTCGAACTGGCACATTCTGGAGCTCGGCCATGTGATATTTCTCGAATTCT
+         GCAAGTATCAAATGGATGTGTGAGCAAAATTCTCGGGAGGTATTATGAAACAGGAAGCATACGACCACGT
+         GCTATCGGAGGATCCAAGCCACGTGTGGCCACAGCCGAAGTCGTTAGCAAAATTTCGCAGTACAAACGCG
+         AGTGTCCTAGCATATTTGCTTGGGAAATTCGGGATAGATTACT-TCAGGAGAACGTTTGTACTAACGATA
+         ATATACCAAGTGTGTCCTCAATAAACCGTGTATTGAGAAACTTGGCT-GCGCAAAAGGAGCAGCAAAGCA
+         CGGGATCCGGGAGCTCCAGCACATCCGCCGGCAACTCAATCAGCGCAAAAGTGTCTGTCAGCATCGGTGG
+         CAACGTGAGCAATGTGGCAAGCGGATCGAGAGGCACGTTGAGCTCTTCCACCG-ATCTTATGC-AGACAG
+         CCACTCCTCTTAACTCTTCGGAAAGCGGTGGCGCA-ACGAACTCCGGGGAGGGTAGTGAACAGGAGGCGA
+         TTTACGA-GAAGCTTCGGCTGTTAAAT-A-CT-CAGC--ACGCTGC--AGGACCAGGAC-CACTGGAGCC
+         TGCCAGAGCAGCGCCCTTGGTAGGTCAATCACCCAACCACCT-AG-GAACCCGATCCAGCCACCCCCAGC
+         TGGTGCACGGTAACCATCAGGCA-CTACAGCAGCATCAACAGCAGAGCTGGCCGCCCCGTCACTATTCCG
+         GATCTTGGTACCCCACCTCTCTTAG-CGAAATACCCA--TCTCATCG--G-C-TCCCAATATCGCATCCG
+         TTACGGCGTA-TGC-ATCAGGACCTTCACTTGCTCA-CTCACTGAGTCCACCCAACGACATCAAAAGCCT
+         GGCCAGTATCGG--T-CACCAGAGAAACT-GC-CC-CGTTGCAACGGA-GGACATA-CATTTA-AAAAAA
+         GAACTTGATGGTCATCAGTCCGATGAAACGGGCTCCGGTGAAGGTGAA-AA-CT-CCAATGGTGGCGCTT
+         CA-AATATAG-GAAACACTGAGGATGATCAAGC-T-CGGCTCA-TA---CTAAAAAGAAAGTTGC-AACG
+         CA--AT-CGAACA-TCTTTCAC-GA-AC-GAC-CAGATAGACAGTCTTGAAAAAGAGTTTGAACGAACA-
+         CACTATC--CAGATGTTTTTGCCCGCGAACGTTTGGCTG-GAAAGATTGGGTTGCCAGAGGCAAGAATTC
+         AGGTTTGGTTCTCAAACCGTCGAGCAAAATGGC-GT
+
+
+         AT-G--CAGAACAGTCACAGCGGAGTGAATCAGCTCGGTGGTGTCTTTGTCAACGGGCGGCCACTGCCGG
+         ACTCCACCCGGCAGAAGATTGTAGAGCTAGCTCACAGCGGGGCCCGGCCGTGCGACATTTCCCGAATTCT
+         GCAGGTGTCCAACGGATGTGTGAGTAAAATTCTGGGCAGGTATTACGAGACTGGCTCCATCAGACCCAGG
+         GCAATCGGTGGTAGTAAACCGAGAGTAGCGACTCCAGAAGTTGTAAGCAAAATAGCCCAGTATAAGCGGG
+         AGTGCCCGTCCATCTTTGCTTGGGAAATCCGAGACAGATTACTGTC-CGAGGGGGTCTGTACCAACGATA
+         ACATACCAAGCGTGTCATCAATAAACAGAGTTCTTCGCAACCTGGCTAGCG-AAAAGCAACAG--ATGGG
+         C-GCAGACGGCA--TGTATGATAAACTAAGG-ATGTTGAAC-GGGC---A--GACCGGAAGC-T-GG-GG
+         C-AC--CCGC--CCTGG-TTG-GTATC-CG-GGGAC-TT---CGGTGCCAGGGCAACCTACGCAAGATGG
+         CTGC-CAGC--AACAGGAAGG--AGGGGGAGAGAATACCAACTCC-ATCA--GT-TCCAAC-GGAGAAGA
+         TTCA-GATGAGGC-TCAAATGCGACTTCAGCTGAAGCGGAAGCTGCAAAGAAATAGAACATCCTTTA--C
+         --CCA-AG-AGC-AAATT-G-AGG-CCCTGGAGAAAGAGTTTGAGAGAACCC-AT-TATCCA-GATGTG-
+         T-TTGCCCGAGAAAGA-CTAGCAGCCAAAATAG-ATCTACCTGA-AGCAAGAATACAGGTATGGTTTTCT
+         AATCGAAGGGCCAAATGGAGAAGAGAAGAAAAACTGAGGAATCAGAGAAGACAGGCCAGCAACACA-CC-
+         -TA-GTCATATTCCTATCA-G-CAGT-AGTT--TCAGCAC-CAGTGTCTA-CCAACCAATTCCACAACC-
+         CACCA-CACCGGTTTCCTCCTTCACATCTGGCTCCATGTTGGGCCGAACAGACACAGCCCTCACAAACAC
+         CTAC-AG-CGCTCTGCCG-CCTATG--CCCAGCTTC-ACCATGGCAAATAACCTGCCTAT-GCAAC-CCC
+         CAGTCCCCAGCCAGAC-CTCCTCATACTCCTGCATGCTGCCCACCAGCCCTTCGGTGAATG-GGCGGAGT
+         TATGATACCTACACCCCCCCACATATGCAGACACACATGAACAGTC-AGCCAATG-GGCACCTCGGGCAC
+         CACT-TCAACAGGACTCATTTCCC-C--TGGTGTGTCAGTTCCAGTTCAAGTTCCCGGAAG--TGAA-CC
+         TGATAT-G-TCTCAATAC-T-GGCCAAGATTACAGT
+
+
+
+  4. Compute just the score of the optimal end-gap free alignment of the two
+     mitochondrial sequences from HW #1: NC_012920 and AF254446 in a third
+     program called "egfalign." Traceback and display will not be required.
+
+
+     The "make" instructions mentioned in Problem 2 will also compile the
+     program for this problem. In this case, it's the "egfalign", stored in the
+     "bin" directory post-compilation.
+
+
+     An executable, named "egfalign" will be compiled and stored in the "bin"
+     directory. This is the executable we will use for this problem.
+
+     To run on NC_012920 and AF254446 to print out score where +2 match, -1 for
+     mismatch, -2 for a gap, run the following:
+
+         UNIX> ./bin/egfalign -s data/NC_012920.fasta data/AF254446.fasta 2 -1 -2
+
+
+     The program is constructed to where you can specify what you want to show.
+     Simply run it without arguments to see what options you have available.
+
+
+     For simplicity, the local alignment score is 620.
+
+
+
+  5. BLAST the two sequences from #1 using the bl2seq utility at NCBI BLAST.
+     Summarize the BLAST alignment in your writeup (alignment length, identity,
+     evalue, etc.) and discuss how it confirms or refutes your result from #3
+     (3 points).
+
+
+     X79493:
+         Matches with itself (X79493) perfectly. Matches with NM_079889.3 99%
+         (Drosophila melanogaster eyeless (ey), transcript variant A, mRNA).
+         With NM_079889.3, length is 3282 and has a handful of gaps when
+         aligned with X79493 but mostly similar.
+
+
+     AY707088:
+         Matches with itself (AY707088) perfectly. In fact, it matches with the
+         top 14 results 100%. They are all human/homosapien paired box 6
+         (or similar) variants with the same length and score. The next one is
+         a 99% query cover but 100% identical: DQ891436.2, aka Synthetic
+         construct clone IMAGE:100004066; FLH176929.01X; RZPDo839B01124D paired
+         box gene 6 (aniridia, keratitis) (PAX6) gene, encodes complete
+         protein. It has a length of 1309. When viewing the alignment, all
+         characters present in AY707088 also are present in DQ891436.2,
+         resembling a perfect alignment. Though, the latter is larger so...
+
+
+     In terms of how it relates to the result from #3, well I don't see these
+     in each other's search results (e.g. looking for AY707088 in X79493's
+     blast gives no results, and vice versa). Looking at the result from #3,
+     this makes sense. They have a pretty good alignment somewhere but don't
+     match around 100%. Plus, the score is nowhere close to the ones compared
+     in the database that were BLASTed.
+
+
+
+  6. Download the "mystery" sequence from the course website. Report its BLAST
+     hits using blastn and blastx at the NCBI website in your writeup (1 point
+     each).
+
+
+     blastn
+         XN_001689051.1 (Anopheles gambiae str. PEST AGAP004707-RB
+         (AgaP_AGAP004707), partial mRNA)
+
+         Percent Identical is 99.16%
+
+     blastx
+         XP_001689103.1 (AGAP004707-PB [Anopheles gambiae str. PEST])
+
+         Percent Identical is 98.08%
+
+
+
+  7. Compute the end-gap free alignment of the two mitochondrial sequences from
+     HW #1: NC_012920 and AF254446 using only linear space. Report the score
+     using the scheme used for problem #2 above (+2 match, -1 mismatch, -1 for
+     a gap) in your writeup (6 points)
+
+
+     The "make" instructions mentioned in Problem 2 will also compile the
+     program for this problem. In this case, it's the "hirschberg", stored in
+     the "bin" directory post-compilation.
+
+
+     An executable, named "hirschberg" will be compiled and stored in the "bin"
+     directory. This is the executable we will use for this problem.
+
+     To run on NC_012920 and AF254446 to print out local alignment score where
+     +2 match, -1 for mismatch, -2 for a gap, run the following:
+
+         UNIX> ./bin/hirschberg -s data/NC_012920.fasta data/AF254446.fasta 2 -1 -2
+
+
+     For simplicity, the local alignment score is 620. And this is computed in
+     linear space. Because the question doesn't ask for string alignments, but
+     only the score, we can cheat and just keep track of the highest value in
+     the two rows while computing the End-Gap Free Alignment.
+
+     The result is a program that is 10x faster (on average) than "egfalign",
+     in exchange for limited functionality. Running "./bin/hirschberg" shows
+     that only the "-s" and "-q" options are valid. No DP table printing or
+     string alignment options are available.
+
+
+
