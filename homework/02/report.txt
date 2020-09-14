@@ -264,6 +264,18 @@ PROBLEMS: (due 9/15)
      each).
 
 
+     blastn
+         XN_001689051.1 (Anopheles gambiae str. PEST AGAP004707-RB
+         (AgaP_AGAP004707), partial mRNA)
+
+         Percent Identical is 99.16%
+
+     blastx
+         XP_001689103.1 (AGAP004707-PB [Anopheles gambiae str. PEST])
+
+         Percent Identical is 98.08%
+
+
 
   7. Compute the end-gap free alignment of the two mitochondrial sequences from
      HW #1: NC_012920 and AF254446 using only linear space. Report the score
