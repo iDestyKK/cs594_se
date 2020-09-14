@@ -90,7 +90,7 @@ $(OBJ)/cn_string.o: $(CNDS)/cn_string.c $(CNDS)/cn_string.h
 # -----------------------------------------------------------------------------
 
 clean:
-	$(RM) $(EXEC) obj/*
+	$(RM) $(EXEC) obj/* submit.tar.xz
 
 package: submit.tar.xz
 
