@@ -91,3 +91,8 @@ $(OBJ)/cn_string.o: $(CNDS)/cn_string.c $(CNDS)/cn_string.h
 
 clean:
 	$(RM) $(EXEC) obj/*
+
+package: submit.tar.xz
+
+submit.tar.xz: $(BIN) data $(LIB) $(OBJ) $(SRC) distro.pdf makefile report.txt
+	tar -cJvf $@ $^
