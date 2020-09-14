@@ -1,3 +1,17 @@
+/*
+ * Local Alignment Utility
+ *
+ * Description:
+ *     Useful tool for comparing and printing out specific data for differences
+ *     between two FASTA files. Score, aligned string, DP table printing with
+ *     backtrack highlighting supported.
+ *
+ *     This variant runs the two FASTA files through Local Alignment.
+ *
+ * Author:
+ *     Clara Nguyen
+ */
+
 //C Includes
 #include <stdio.h>
 #include <stdlib.h>

@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------------
 
 size_t intlen(int);
-int min(int, int);
-int max(int, int);
+int    min   (int, int);
+int    max   (int, int);
 
 // ----------------------------------------------------------------------------
 // DP Object Function Prototypes                                           {{{1

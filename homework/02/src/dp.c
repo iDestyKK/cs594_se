@@ -4,6 +4,12 @@
 // Helper Functions                                                        {{{1
 // ----------------------------------------------------------------------------
 
+/*
+ * intlen                                                                  {{{2
+ *
+ * Figures out the length of an integer if it were parsed as a string
+ */
+
 size_t intlen(int v) {
 	char *buffer;
 	size_t len;
@@ -16,9 +22,23 @@ size_t intlen(int v) {
 	return len;
 }
 
+/*
+ * min                                                                     {{{2
+ *
+ * When given two numbers, return the lowest of the two. To find the minimum of
+ * more numbers, stack the function calls (e.g. min(min(a, b), c);)
+ */
+
 int min(int a, int b) {
 	return (a < b) ? a : b;
 }
+
+/*
+ * max                                                                     {{{2
+ *
+ * When given two numbers, return the highest of the two. To find the maximum
+ * of more numbers, stack the function calls (e.g. max(max(a, b), c);)
+ */
 
 int max(int a, int b) {
 	return (a > b) ? a : b;
@@ -27,6 +47,12 @@ int max(int a, int b) {
 // ----------------------------------------------------------------------------
 // DP Object Function Declarations                                         {{{1
 // ----------------------------------------------------------------------------
+
+/*
+ * dp_init                                                                 {{{2
+ *
+ * Initialises the DP object with a blank table and string information.
+ */
 
 DP dp_init(char *s1, char *s2, int v1, int v2, int v3) {
 	size_t i, j;
@@ -64,6 +90,12 @@ DP dp_init(char *s1, char *s2, int v1, int v2, int v3) {
 	//Return
 	return obj;
 }
+
+/*
+ * dp_run_global                                                           {{{2
+ *
+ * Runs FASTA data through global alignment.
+ */
 
 void dp_run_global(DP obj) {
 	size_t    i, j;
@@ -115,6 +147,12 @@ void dp_run_global(DP obj) {
 		}
 	}
 }
+
+/*
+ * dp_run_local                                                            {{{2
+ *
+ * Runs FASTA data through local alignment.
+ */
 
 void dp_run_local(DP obj) {
 	size_t    i, j;
@@ -170,6 +208,12 @@ void dp_run_local(DP obj) {
 	}
 }
 
+/*
+ * dp_run_egfa                                                             {{{2
+ *
+ * Runs FASTA data through end-gap free alignment.
+ */
+
 void dp_run_egfa(DP obj) {
 	size_t    i, j;
 	int       v, cost[3];
@@ -221,6 +265,12 @@ void dp_run_egfa(DP obj) {
 	}
 }
 
+/*
+ * dp_run_clear                                                            {{{2
+ *
+ * Clears out the DP table, setting all values to 0.
+ */
+
 void dp_clear(DP obj) {
 	size_t i;
 
@@ -230,6 +280,25 @@ void dp_clear(DP obj) {
 	for (i = 0; i < obj->w; i++)
 		memset(obj->actions[i], 0, sizeof(DP_ACTION) * obj->h);
 }
+
+/*
+ * dp_backtrack                                                            {{{2
+ *
+ * Performs a backtrack on a processed DP (a "dp_run_*" command must be used
+ * prior) to highlight where the most optimal alignment occurred. Running the
+ * "dp_print_table" function after this will have the most optimal alignment
+ * print in red.
+ *
+ * Because multiple algorithms are supported here, the user is given the
+ * flexibility to choose where to start the backtrack via (start_x, start_y).
+ * They are also allowed to choose whether to force it to seek (0, 0) once one
+ * axis coordinate has reached 0.
+ *
+ * For Global Alignment, "force_start" should be set to 1, and starting x, y
+ * coordinates should be set to the bottom right of the table. For all others,
+ * "force_start" should be set to 0, and starting x, y coordinates should be
+ * set to the location of the highest value in the table.
+ */
 
 void dp_backtrack(DP obj, size_t start_x, size_t start_y, size_t force_start) {
 	int i, j, force;
@@ -281,6 +350,13 @@ void dp_backtrack(DP obj, size_t start_x, size_t start_y, size_t force_start) {
 	}
 }
 
+/*
+ * dp_print_table                                                          {{{2
+ *
+ * Prints out the DP table. If "dp_backtrack" was called before this, the
+ * optimal path will be shown in red.
+ */
+
 void dp_print_table(DP obj) {
 	size_t i, j, w, tmp;
 
@@ -328,6 +404,13 @@ void dp_print_table(DP obj) {
 		printf("\n");
 	}
 }
+
+/*
+ * dp_print_align                                                          {{{2
+ *
+ * Prints out the alignment strings based on table data. Blanks will show as
+ * "-" to force alignment of the strings visually.
+ */
 
 void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) {
 	int i, j, force, dec_amt;
@@ -459,6 +542,12 @@ void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) 
 	free(res[1]);
 }
 
+/*
+ * dp_free                                                                 {{{2
+ *
+ * Frees the DP object.
+ */
+
 void dp_free(DP obj) {
 	size_t i;
 
@@ -470,10 +559,12 @@ void dp_free(DP obj) {
 	for (i = 0; i < obj->w; i++) {
 		free(obj->table[i]);
 		free(obj->actions[i]);
+		free(obj->hl[i]);
 	}
 
 	free(obj->table);
 	free(obj->actions);
+	free(obj->hl);
 
 	//Free self
 	free(obj);
