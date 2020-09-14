@@ -84,23 +84,13 @@ int max(int a, int b) {
 // DP Object Function Prototypes                                           {{{1
 // ----------------------------------------------------------------------------
 
-typedef enum dp_action {
-	DP_NULL     = 0,
-	DP_MATCH    = 1,
-	DP_MISMATCH = 1,
-	DP_SPACE1   = 2,
-	DP_SPACE2   = 3
-} DP_ACTION;
-
 typedef struct dp {
 	char       *s[2];
 	size_t      l[2], w, h;
 	int         val_match;
 	int         val_mismatch;
 	int         val_space;
-	int       **table;
-	char      **hl;
-	DP_ACTION **actions;
+	int        *table[2];
 } *DP;
 
 //Function Prototypes
@@ -141,17 +131,8 @@ DP dp_init(char *s1, char *s2, int v1, int v2, int v3) {
 	obj->h = obj->l[0] + 1;
 
 	//Construction is the same as before, but height of 2 instead.
-	obj->table = (int **) malloc(sizeof(int *) * obj->w);
-	for (i = 0; i < obj->w; i++)
-		obj->table[i] = (int *) calloc(2, sizeof(int));
-
-	obj->hl = (char **) malloc(sizeof(char *) * obj->w);
-	for (i = 0; i < obj->w; i++)
-		obj->hl[i] = (char *) calloc(2, sizeof(char));
-
-	obj->actions = (DP_ACTION **) malloc(sizeof(DP_ACTION *) * obj->w);
-	for (i = 0; i < obj->w; i++)
-		obj->actions[i] = (DP_ACTION *) calloc(2, sizeof(DP_ACTION));
+	obj->table[0] = (int *) malloc(sizeof(int) * obj->w);
+	obj->table[1] = (int *) malloc(sizeof(int) * obj->w);
 
 	//Return
 	return obj;
@@ -166,7 +147,6 @@ DP dp_init(char *s1, char *s2, int v1, int v2, int v3) {
 int dp_run_egfa(DP obj) {
 	size_t    i, j;
 	int       v, cost[3], mval;
-	DP_ACTION a;
 
 	dp_clear(obj);
 
@@ -178,23 +158,21 @@ int dp_run_egfa(DP obj) {
 	 */
 
 	for (i = 0; i < obj->w; i++)
-		obj->table[i][1] = 0;
+		obj->table[1][i] = 0;
 
 	//Go through. This time, it's even more than personal.
 	for (j = 1; j < obj->h; j++) {
 		//Second row to first one.
-		//TODO: Flip X and Y so we can use memcpy instead.
-		for (i = 0; i < obj->w; i++)
-			obj->table[i][0] = obj->table[i][1];
+		memcpy(&obj->table[0][0], &obj->table[1][0], sizeof(int) * obj->w);
 
 		//First value is default.
-		obj->table[0][1] = 0;
+		obj->table[1][0] = 0;
 
 		for (i = 1; i < obj->w; i++) {
 			//Generate costs and choose the lowest one
-			cost[0] = obj->table[i - 1][0];
-			cost[1] = obj->table[i    ][0] + obj->val_space;
-			cost[2] = obj->table[i - 1][1] + obj->val_space;
+			cost[0] = obj->table[0][i - 1];
+			cost[1] = obj->table[0][i    ] + obj->val_space;
+			cost[2] = obj->table[1][i - 1] + obj->val_space;
 
 			//Make cost[0] worth more depending on matching
 			if (obj->s[0][j - 1] == obj->s[1][i - 1])
@@ -202,20 +180,13 @@ int dp_run_egfa(DP obj) {
 			else
 				cost[0] += obj->val_mismatch;
 
-			//v = max(cost[0], max(cost[1], cost[2]));
-			v = cost[0], a = DP_MATCH;
-
-			if (cost[1] > v)
-				v = cost[1], a = DP_SPACE1;
-
-			if (cost[2] > v)
-				v = cost[2], a = DP_SPACE2;
+			//Make the choice that leads to the highest number being stored
+			v = max(cost[0], max(cost[1], cost[2]));
 
 			//Update the maximum value
 			mval = max(mval, v);
 
-			obj->table  [i][1] = v;
-			obj->actions[i][1] = a;
+			obj->table  [1][i] = v;
 		}
 	}
 
@@ -231,11 +202,8 @@ int dp_run_egfa(DP obj) {
 void dp_clear(DP obj) {
 	size_t i;
 
-	for (i = 0; i < obj->w; i++)
-		memset(obj->table[i], 0, sizeof(int) * 2);
-
-	for (i = 0; i < obj->w; i++)
-		memset(obj->actions[i], 0, sizeof(DP_ACTION) * 2);
+	memset(obj->table[0], 0, sizeof(int) * obj->w);
+	memset(obj->table[1], 0, sizeof(int) * obj->w);
 }
 
 /*
@@ -252,15 +220,8 @@ void dp_free(DP obj) {
 	free(obj->s[1]);
 
 	//Free the table/actions
-	for (i = 0; i < obj->w; i++) {
-		free(obj->table[i]);
-		free(obj->actions[i]);
-		free(obj->hl[i]);
-	}
-
-	free(obj->table);
-	free(obj->actions);
-	free(obj->hl);
+	free(obj->table[0]);
+	free(obj->table[1]);
 
 	//Free self
 	free(obj);
