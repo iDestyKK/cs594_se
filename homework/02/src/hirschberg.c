@@ -145,34 +145,30 @@ DP dp_init(char *s1, char *s2, int v1, int v2, int v3) {
  */
 
 int dp_run_egfa(DP obj) {
-	size_t    i, j;
-	int       v, cost[3], mval;
+	size_t        i, j;
+	int           v, cost[3], mval;
+	unsigned char f, g;
 
 	dp_clear(obj);
 
 	mval = INT_MIN;
+	f = 0;
+	g = 1;
 
-	/*
-	 * Very first row is just... well... default values lol. But let's set the
-	 * second row. This'll make the following loop simpler.
-	 */
-
+	//Set the first row to default values
 	for (i = 0; i < obj->w; i++)
-		obj->table[1][i] = 0;
+		obj->table[f][i] = 0;
 
 	//Go through. This time, it's even more than personal.
 	for (j = 1; j < obj->h; j++) {
-		//Second row to first one.
-		memcpy(&obj->table[0][0], &obj->table[1][0], sizeof(int) * obj->w);
-
 		//First value is default.
-		obj->table[1][0] = 0;
+		obj->table[g][0] = 0;
 
 		for (i = 1; i < obj->w; i++) {
 			//Generate costs and choose the lowest one
-			cost[0] = obj->table[0][i - 1];
-			cost[1] = obj->table[0][i    ] + obj->val_space;
-			cost[2] = obj->table[1][i - 1] + obj->val_space;
+			cost[0] = obj->table[f][i - 1];
+			cost[1] = obj->table[f][i    ] + obj->val_space;
+			cost[2] = obj->table[g][i - 1] + obj->val_space;
 
 			//Make cost[0] worth more depending on matching
 			if (obj->s[0][j - 1] == obj->s[1][i - 1])
@@ -186,8 +182,11 @@ int dp_run_egfa(DP obj) {
 			//Update the maximum value
 			mval = max(mval, v);
 
-			obj->table  [1][i] = v;
+			obj->table[g][i] = v;
 		}
+
+		f = !f;
+		g = !g;
 	}
 
 	return mval;
@@ -273,6 +272,7 @@ int main(int argc, char ** argv) {
 	maxv = dp_run_egfa(obj);
 
 	sz = strlen(argv[1]);
+	j = 0;
 
 	for (i = 0; i < sz; i++) {
 		switch (argv[1][i]) {
