@@ -50,7 +50,7 @@ $(BIN)/hirschberg: $(OBJ)/hirschberg.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
 # Static Libraries                                                         {{{1
 # -----------------------------------------------------------------------------
 
-$(OBJ)/cnds.a: $(OBJ)/cn_string.o $(OBJ)/cn_cmp.o $(OBJ)/cn_map.o
+$(OBJ)/cnds.a: $(OBJ)/cn_string.o
 	ar cr $@ $^
 
 # -----------------------------------------------------------------------------
@@ -84,13 +84,6 @@ $(OBJ)/arg_parse.o: $(SRC)/arg_parse.c
 
 $(OBJ)/cn_string.o: $(CNDS)/cn_string.c $(CNDS)/cn_string.h
 	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(OBJ)/cn_cmp.o: $(CNDS)/cn_cmp.c $(CNDS)/cn_cmp.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(OBJ)/cn_map.o: $(CNDS)/cn_map.c $(CNDS)/cn_map.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
 
 # -----------------------------------------------------------------------------
 # Extras                                                                   {{{1

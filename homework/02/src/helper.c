@@ -1,17 +1,6 @@
 #include "helper.h"
 
 /*
- * Destructor to free the C-String key in a CN_Map.
- */
-
-void destruct_key(CNM_NODE *node) {
-	char *v = *(char **) node->key;
-
-	if (v != NULL)
-		free(v);
-}
-
-/*
  * fasta_import_to_cn_string
  *
  * Imports a fasta file into a CN_String, if possible. Program exits with an
