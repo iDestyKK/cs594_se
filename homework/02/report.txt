@@ -281,3 +281,31 @@ PROBLEMS: (due 9/15)
      HW #1: NC_012920 and AF254446 using only linear space. Report the score
      using the scheme used for problem #2 above (+2 match, -1 mismatch, -1 for
      a gap) in your writeup (6 points)
+
+
+     The "make" instructions mentioned in Problem 2 will also compile the
+     program for this problem. In this case, it's the "hirschberg", stored in
+     the "bin" directory post-compilation.
+
+
+     An executable, named "hirschberg" will be compiled and stored in the "bin"
+     directory. This is the executable we will use for this problem.
+
+     To run on NC_012920 and AF254446 to print out local alignment score where
+     +2 match, -1 for mismatch, -2 for a gap, run the following:
+
+         UNIX> ./bin/hirschberg -s data/NC_012920.fasta data/AF254446.fasta 2 -1 -2
+
+
+     For simplicity, the local alignment score is 620. And this is computed in
+     linear space. Because the question doesn't ask for string alignments, but
+     only the score, we can cheat and just keep track of the highest value in
+     the two rows while computing the End-Gap Free Alignment.
+
+     The result is a program that is 10x faster (on average) than "egfalign",
+     in exchange for limited functionality. Running "./bin/hirschberg" shows
+     that only the "-s" and "-q" options are valid. No DP table printing or
+     string alignment options are available.
+
+
+
