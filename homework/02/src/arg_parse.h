@@ -9,7 +9,7 @@ typedef struct param_t {
 	unsigned char flag_align,
 	              flag_dp,
 	              flag_quiet,
-	              flag_string,
+	              flag_score,
 	              flag_highlight;
 } *PARAM_T;
 

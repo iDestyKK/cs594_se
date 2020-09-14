@@ -7,7 +7,7 @@ PARAM_T arg_init() {
 	obj->flag_align     = 0;
 	obj->flag_dp        = 0;
 	obj->flag_quiet     = 0;
-	obj->flag_string    = 0;
+	obj->flag_score     = 0;
 	obj->flag_highlight = 0;
 
 	return obj;
@@ -36,7 +36,7 @@ void arg_parse(PARAM_T obj, char *args) {
 				break;
 
 			case 's':
-				obj->flag_string = 1;
+				obj->flag_score = 1;
 				break;
 
 			case 't':

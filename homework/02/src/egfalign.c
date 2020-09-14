@@ -36,10 +36,10 @@ int main(int argc, char ** argv) {
 			stderr,
 			"usage: %s -amqst file1 file2 match_val mismatch_val gap_val\n\n"
 			"Parameter Information:\n"
-			"\t-a\tDisplay the end-gap free alignment\n"
+			"\t-a\tDisplay strings post-alignment\n"
 			"\t-m\tDisplay the DP table\n"
 			"\t-q\tQuiet(er). Stops printing headers before each section\n"
-			"\t-s\tDisplay strings post-alignment\n"
+			"\t-s\tDisplay the end-gap free alignment score\n"
 			"\t-t\tHighlight the traceback in red via ANSI (enables \"-m\" "
 			"flag)\n"
 			"\nThe information printed out is in the order you define the "
@@ -86,8 +86,8 @@ int main(int argc, char ** argv) {
 	for (i = 0; i < sz; i++) {
 		switch (argv[1][i]) {
 			case 'a':
-				print_header(j, params->flag_quiet, "LOCAL ALIGNMENT:\n");
-				printf("%d\n", obj->table[maxx][maxy]);
+				print_header(j, params->flag_quiet, "STRING ALIGNMENT:\n");
+				dp_print_align(obj, maxx, maxy, 0);
 				break;
 
 			case 'm':
@@ -99,8 +99,8 @@ int main(int argc, char ** argv) {
 				break;
 
 			case 's':
-				print_header(j, params->flag_quiet, "STRING ALIGNMENT:\n");
-				dp_print_align(obj, maxx, maxy, 0);
+				print_header(j, params->flag_quiet, "ALIGNMENT SCORE:\n");
+				printf("%d\n", obj->table[maxx][maxy]);
 				break;
 		}
 	}
