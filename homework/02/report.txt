@@ -168,7 +168,7 @@ PROBLEMS: (due 9/15)
      To show traceback, there is a colourful option added in. Run the
      following command:
 
-         UNIX> ./bin/globalign -mt data/X79493.fasta data/AY707088.fasta 2 -1 -2 | less -R
+         UNIX> ./bin/localign -mt data/X79493.fasta data/AY707088.fasta 2 -1 -2 | less -R
 
      The traceback will be coloured in red. Be sure your terminal allows ANSI
      escape sequences to perform the colouring. If you want a normal table
