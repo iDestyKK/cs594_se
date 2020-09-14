@@ -428,9 +428,6 @@ void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) 
 			if (i <= 0 || j <= 0)
 				break;
 		}
-		else
-			if (i < 0 || j < 0)
-				break;
 
 		switch(obj->actions[i][j]) {
 			case DP_NULL:
@@ -450,6 +447,9 @@ void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) 
 				break;
 		}
 
+		if (i < 0 || j < 0)
+			break;
+
 		sz++;
 	}
 
@@ -460,13 +460,13 @@ void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) 
 		//Go left
 		if (i > 0) {
 			for (; i > 0; i--, sz++);
-			dec_amt++;
+			//dec_amt++;
 		}
 
 		//Go up
 		if (j > 0) {
 			for (; j > 0; j--, sz++);
-			dec_amt++;
+			//dec_amt++;
 		}
 
 		//Deduct accordingly
@@ -482,8 +482,10 @@ void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) 
 	j = start_y;
 
 	while (!force) {
+		/*
 		if (i <= 0 || j <= 0)
 			break;
+		*/
 
 		sz--;
 
@@ -520,6 +522,9 @@ void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) 
 				i--;
 				break;
 		}
+
+		if (i < 0 || j < 0)
+			break;
 	}
 
 	//Ditto. If at a null spot, we can try to approach the top-left corner
