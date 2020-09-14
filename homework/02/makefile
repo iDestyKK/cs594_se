@@ -19,9 +19,10 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/globalign \
-	$(BIN)/localign  \
-	$(BIN)/egfalign
+	$(BIN)/globalign  \
+	$(BIN)/localign   \
+	$(BIN)/egfalign   \
+	$(BIN)/hirschberg
 
 all: $(EXEC)
 
@@ -39,6 +40,10 @@ $(BIN)/localign: $(OBJ)/localign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
 
 $(BIN)/egfalign: $(OBJ)/egfalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
                  $(OBJ)/dp.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BIN)/hirschberg: $(OBJ)/hirschberg.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
+                   $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 # -----------------------------------------------------------------------------
@@ -59,6 +64,9 @@ $(OBJ)/localign.o: $(SRC)/localign.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/egfalign.o: $(SRC)/egfalign.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/hirschberg.o: $(SRC)/hirschberg.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/dp.o: $(SRC)/dp.c
