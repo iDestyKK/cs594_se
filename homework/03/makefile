@@ -21,7 +21,9 @@ CNDS = $(LIB)/cnds
 EXEC = \
 	$(BIN)/odc_seq_gen    \
 	$(BIN)/odc_viterbi    \
-	$(BIN)/odc_forward    \
+	$(BIN)/odc_forward
+
+TEST_EXEC = \
 	$(BIN)/viterbi_alg_ex
 
 all: $(EXEC)
@@ -77,8 +79,12 @@ $(OBJ)/cn_string.o: $(CNDS)/cn_string.c $(CNDS)/cn_string.h
 # -----------------------------------------------------------------------------
 
 clean:
-	$(RM) $(EXEC) obj/* submit.tar.xz
+	$(RM) $(EXEC) $(TEST_EXEC) obj/* submit.tar.xz
 
+# Test programs just to make sure I know wtf I'm doing...
+test: $(TEST_EXEC)
+
+# Tar package functionality
 package: submit.tar.xz
 
 submit.tar.xz: $(BIN) data $(LIB) $(OBJ) $(SRC) distro.pdf makefile report.txt
