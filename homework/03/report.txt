@@ -130,4 +130,8 @@ PROBLEMS: (due 9/29)
      midterm.
 
 
+     ok. They are located in the "data" directory as "data/NC_003997.predict"
+     and "data/NC_007530.predict".
+
+
 
