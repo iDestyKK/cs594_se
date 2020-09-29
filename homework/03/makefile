@@ -24,6 +24,7 @@ EXEC = \
 	$(BIN)/odc_forward
 
 TEST_EXEC = \
+	$(BIN)/forward_alg_ex \
 	$(BIN)/viterbi_alg_ex
 
 all: $(EXEC)
@@ -39,6 +40,9 @@ $(BIN)/odc_forward: $(OBJ)/odc_forward.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ -lm
 
 $(BIN)/odc_viterbi: $(OBJ)/odc_viterbi.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+$(BIN)/forward_alg_ex: $(OBJ)/forward_alg_ex.o
 	$(CC) $(CFLAGS) -o $@ $^ -lm
 
 $(BIN)/viterbi_alg_ex: $(OBJ)/viterbi_alg_ex.o
@@ -62,6 +66,9 @@ $(OBJ)/odc_forward.o: $(SRC)/odc_forward.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/odc_viterbi.o: $(SRC)/odc_viterbi.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/forward_alg_ex.o: $(SRC)/forward_alg_ex.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/viterbi_alg_ex.o: $(SRC)/viterbi_alg_ex.c
