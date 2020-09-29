@@ -94,5 +94,6 @@ test: $(TEST_EXEC)
 # Tar package functionality
 package: submit.tar.xz
 
-submit.tar.xz: $(BIN) data $(LIB) $(OBJ) $(SRC) distro.pdf makefile report.txt
+submit.tar.xz: $(BIN) data/*.txt data/*.predict $(LIB) $(OBJ) $(SRC)/odc_*.c \
+               distro.pdf makefile report.txt
 	tar -cJvf $@ $^
