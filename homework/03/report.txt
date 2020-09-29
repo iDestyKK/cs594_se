@@ -13,6 +13,9 @@ PROBLEMS: (due 9/29)
   2. Download the two particular instances available from the course website.
 
 
+     ok
+
+
 
   3. Determine the probability of the benchmark files given the provided
      dishonest casino model. Please report the probabilities in your report and
@@ -35,10 +38,16 @@ PROBLEMS: (due 9/29)
      "Ames" (NC_003997).
 
 
+     ok
+
+
 
   6. Visit the GLIMMer website
      (http://ccb.jhu.edu/software/glimmer/index.shtml). Read the release notes,
      information, and download the latest version.
+
+
+     ok
 
 
 
