@@ -2,7 +2,14 @@
  * Occasionally Dishonest Casino
  *
  * Description:
- *     Implements "The occasionally dishonest casino" from Durbin, Pg. 54.
+ *     Implements "The occasionally dishonest casino" from Durbin, Pg. 54. This
+ *     simply generates a sequence. It prints the sequence of dice rolls, as
+ *     well as what dice was being used for the rolls. You may filter out lines
+ *     if you want to see either.
+ *
+ *     The program is written in an extensible manner. Dice are allowed any
+ *     number of sides and may be tweaked. Seed and number of rolls are passed
+ *     in as command line arguments.
  *
  * Author:
  *     Clara Nguyen
@@ -67,13 +74,13 @@ size_t dice_roll(DICE obj) {
 	long double v;
 	int i;
 
-	//Roll.
-	v = ((long double) rand()) / RAND_MAX;
+	//Generate number between 0 and total w/ decimal precision.
+	v = (((long double) rand()) / RAND_MAX) * obj->total;
 
-	for (i = 0; i < obj->sides; i++) {
+	//Figure out what it landed on
+	for (i = 0; i < obj->sides; i++)
 		if (v < obj->odds[i])
 			break;
-	}
 
 	return i;
 }
@@ -88,10 +95,10 @@ void dice_free(DICE obj) {
 // ----------------------------------------------------------------------------
 
 int main(int argc, char **argv) {
-	int rolls, i, seed;
-	DICE_ID die_index;
-	char *run, *fair;
-	DICE d[2];
+	int         rolls, i, seed;
+	DICE_ID     die_index;
+	char       *run, *fair;
+	DICE        d[2];
 	long double of, ou_a, ou_b, swp;
 
 	//Argument Check
@@ -134,7 +141,10 @@ int main(int argc, char **argv) {
 		fair[i] = (die_index == DICE_FAIR) ? 'F' : 'L';
 	}
 
+	//Null termination of final character
 	run[i] = fair[i] = 0;
+
+	//Print out both the rolls and the die used.
 	printf("%s\n%s\n", run, fair);
 
 	//Clean up. We're done here.
