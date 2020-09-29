@@ -21,6 +21,7 @@ CNDS = $(LIB)/cnds
 EXEC = \
 	$(BIN)/odc_seq_gen    \
 	$(BIN)/odc_viterbi    \
+	$(BIN)/odc_forward    \
 	$(BIN)/viterbi_alg_ex
 
 all: $(EXEC)
@@ -31,6 +32,9 @@ all: $(EXEC)
 
 $(BIN)/odc_seq_gen: $(OBJ)/odc_seq_gen.o
 	$(CC) $(CFLAGS) -o $@ $^
+
+$(BIN)/odc_forward: $(OBJ)/odc_forward.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^ -lm
 
 $(BIN)/odc_viterbi: $(OBJ)/odc_viterbi.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ -lm
@@ -50,6 +54,9 @@ $(OBJ)/cnds.a: $(OBJ)/cn_string.o
 # -----------------------------------------------------------------------------
 
 $(OBJ)/odc_seq_gen.o: $(SRC)/odc_seq_gen.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/odc_forward.o: $(SRC)/odc_forward.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/odc_viterbi.o: $(SRC)/odc_viterbi.c
