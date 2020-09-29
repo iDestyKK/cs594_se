@@ -20,7 +20,7 @@ CNDS = $(LIB)/cnds
 # Executables
 EXEC = \
 	$(BIN)/odc_seq_gen    \
-	$(BIN)/viterbi        \
+	$(BIN)/odc_viterbi    \
 	$(BIN)/viterbi_alg_ex
 
 all: $(EXEC)
@@ -32,7 +32,7 @@ all: $(EXEC)
 $(BIN)/odc_seq_gen: $(OBJ)/odc_seq_gen.o
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(BIN)/viterbi: $(OBJ)/viterbi.o $(OBJ)/cnds.a
+$(BIN)/odc_viterbi: $(OBJ)/odc_viterbi.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ -lm
 
 $(BIN)/viterbi_alg_ex: $(OBJ)/viterbi_alg_ex.o
@@ -52,7 +52,7 @@ $(OBJ)/cnds.a: $(OBJ)/cn_string.o
 $(OBJ)/odc_seq_gen.o: $(SRC)/odc_seq_gen.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(OBJ)/viterbi.o: $(SRC)/viterbi.c
+$(OBJ)/odc_viterbi.o: $(SRC)/odc_viterbi.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/viterbi_alg_ex.o: $(SRC)/viterbi_alg_ex.c
