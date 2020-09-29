@@ -174,8 +174,8 @@ int main(int argc, char **argv) {
 	long double  of, ou_a, ou_b;
 	FILE        *op;
 
-	if (argc != 3) {
-		fprintf(stderr, "usage: %s in_file out_file\n", argv[0]);
+	if (argc != 2) {
+		fprintf(stderr, "usage: %s in_file\n", argv[0]);
 		return 1;
 	}
 
