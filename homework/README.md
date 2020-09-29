@@ -26,7 +26,7 @@ The script simply takes the `submit.tar.xz` created by `make package` and moves
 it into `submit`.
 
 ## Homework Progression
-```
+```diff
 + 01 - DNA/Genome Analysis
 + 02 - Sequence Alignment
 + 03 - Hidden Markov Models (Occasionally Dishonest Casino) & Glimmer
