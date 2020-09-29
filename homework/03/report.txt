@@ -1,0 +1,137 @@
+SUBMISSION DETAILS
+
+  Before we begin, this submission contains several directories. For the sake
+  of simplicity, "src" is the source code to the programs this assignment
+  requests. "lib" contains CNDS (Clara Nguyen's Data Structures), which is a
+  collection of C libraries written entirely by me. All code here (libraries or
+  not) is entirely my own work.
+
+  The fasta data files are stored in "data". My apologies if storing them in a
+  directory causes any problems.
+
+  There is a makefile supplied with this submission. To compile every program,
+  simply run "make". Every executable will be put into the "bin" directory.
+
+  This is written in C and adheres to the GNU89 standard (C89 with GNU
+  extensions). Compilation was tested on UTK's EECS Hydra machines.
+
+
+PROBLEMS: (due 9/29)
+
+  1. Implement the dishonest casino Hidden Markov Model (HMM) similar to the
+     one described on page 54 of Durbin. Assume the casino is always fair at
+     the start (i.e., at t=0, Pr(F) = 1 & Pr(L) = 0), and shifts to another
+     state with probability 0.05. Generate a random sequence of 300 rolls based
+     on this model. Please submit the code and instructions how to run in your
+     submission; a particular instance of 300 rolls in your submission is
+     optional (8 points).
+
+
+     To compile, simply run the following command in the same directory as the
+     supplied "makefile":
+
+         UNIX> make
+
+
+
+     An executable, named "odc_seq_gen" will be compiled and stored in the
+     "bin" directory. This is the executable we will use for this problem.
+
+     The program allows you to specify the number of rolls and a seed. To run
+     with 300 rolls where the seed is 1, run the following:
+
+         UNIX> ./bin/odc_seq_gen 300 1
+
+
+
+  2. Download the two particular instances available from the course website.
+
+
+     ok
+
+
+
+  3. Determine the probability of the benchmark files given the provided
+     dishonest casino model. Please report the probabilities in your report and
+     include your source code in your submission with instructions how to run
+     it (10 points).
+
+
+     The "make" instructions mentioned in Problem 1 will also compile the
+     program for this problem. In this case, it's the "odc_forward", stored in
+     the "bin" directory post-compilation.
+
+
+     To run on both of the files given in #2, run the following commands:
+
+         UNIX> ./bin/odc_forward data/hw3_1.txt
+         UNIX> ./bin/odc_forward data/hw3_2.txt
+
+
+     The runs will report the following:
+
+         hw3_1.txt: 2.71995e-232
+         hw3_2.txt: 1.93533e-232
+
+
+
+  4. Determine the most likely state sequence of the benchmark files given the
+     dishonest casino model of #2 using an implementation of the Viterbi
+     algorithm. Please save the result as files "viterbi.1.txt" and
+     "viterbi.2.txt" and label the states "F" and "L" as used in Figure 3.5 in
+     Durbin. Please also include these result files and the source code in your
+     submission (10 points).
+
+
+     The "make" instructions mentioned in Problem 1 will also compile the
+     program for this problem. In this case, it's the "odc_viterbi", stored in
+     the "bin" directory post-compilation.
+
+
+     To run on both of the files given in #2, and output resulting files
+     discussed in the question, run the following commands:
+
+         UNIX> ./bin/odc_viterbi data/hw3_1.txt viterbi.1.txt
+         UNIX> ./bin/odc_viterbi data/hw3_2.txt viterbi.2.txt
+
+
+     It will generate "viterbi.1.txt" and "viterbi.2.txt" in the root directory
+     of the submission.
+
+
+     For the sake of the question, these files have been run through
+     "odc_viterbi" and their output text files are included in the "data"
+     directory of this submission.
+
+
+
+  5. Download two Anthrax strains from GenBank, the gold standard "Ames
+     ancestor" that is virulent (NC_007530) and the non-virulent lab strain
+     "Ames" (NC_003997).
+
+
+     ok
+
+
+
+  6. Visit the GLIMMer website
+     (http://ccb.jhu.edu/software/glimmer/index.shtml). Read the release notes,
+     information, and download the latest version.
+
+
+     ok
+
+
+
+  7. Run Glimmer3 on both genomes and include the output gene calls in your
+     submission (4 pts each). Please do not include the genomes as they are
+     large, but hold on to them wherever you are doing your work; these
+     specific genomes will be the starting point for homework #4 after the
+     midterm.
+
+
+     ok. They are located in the "data" directory as "data/NC_003997.predict"
+     and "data/NC_007530.predict".
+
+
+
