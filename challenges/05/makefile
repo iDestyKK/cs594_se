@@ -19,7 +19,8 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/gen_suffix_tree
+	$(BIN)/gen_suffix_tree \
+	$(BIN)/gen_input_str
 
 all: $(EXEC)
 
@@ -28,6 +29,9 @@ all: $(EXEC)
 # -----------------------------------------------------------------------------
 
 $(BIN)/gen_suffix_tree: $(OBJ)/gen_suffix_tree.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BIN)/gen_input_str: $(OBJ)/gen_input_str.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 # -----------------------------------------------------------------------------
@@ -43,6 +47,9 @@ $(OBJ)/cnds.a: $(OBJ)/cn_string.o $(OBJ)/cn_cmp.o $(OBJ)/cn_map.o \
 # -----------------------------------------------------------------------------
 
 $(OBJ)/gen_suffix_tree.o: $(SRC)/gen_suffix_tree.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/gen_input_str.o: $(SRC)/gen_input_str.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # -----------------------------------------------------------------------------
