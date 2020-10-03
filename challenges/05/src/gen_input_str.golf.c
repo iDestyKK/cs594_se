@@ -1,0 +1,1 @@
+i;main(int c,char**a){while(a[1][i])puts(a[1]+i++);}
