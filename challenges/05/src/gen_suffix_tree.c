@@ -231,7 +231,7 @@ void stree_node_recursive_free(SNODE obj) {
 // ----------------------------------------------------------------------------
 
 int main(int argc, char **argv) {
-	size_t i, asz;
+	size_t i, j, asz;
 	CN_VEC arr;
 
 	//Argument Check
@@ -293,12 +293,12 @@ int main(int argc, char **argv) {
 				//(Safely) assume LCP[0] is 0. Rest, compute.
 				printf("LCP ARRAY:\n[ 0 ");
 
-				for (i = 1; i < cn_vec_size(arr) - 1; i++) {
+				for (j = 1; j < cn_vec_size(arr) - 1; j++) {
 					printf(
 						"%d ",
 						strsim(
-							argv[2 + cn_vec_get(arr, int, i)    ],
-							argv[2 + cn_vec_get(arr, int, i + 1)]
+							argv[2 + cn_vec_get(arr, int, j    )],
+							argv[2 + cn_vec_get(arr, int, j + 1)]
 						)
 					);
 				}
