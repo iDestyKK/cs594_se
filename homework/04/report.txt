@@ -71,12 +71,15 @@ PROBLEMS: (due 10/22)
      (5 points)
 
 
-	 ok. It's stored as "data/influenza-A.contig".
+     ok. It's stored as "data/influenza-A.contig".
 
 
 
   9. Download the test dataset from the course website, and assemble it using
      minimus. Submit the resulting contigs (5 points)
+
+
+     ok. It's stored as "data/camp.contig".
 
 
 
