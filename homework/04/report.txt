@@ -55,6 +55,9 @@ PROBLEMS: (due 10/22)
      "dnadiff".
 
 
+     ok. It's stored as "data/q6.snps"
+
+
 
   7. Submit a brief writeup in your report summarizing the results. Hypothesize
      what the differences may be between the strains? Are there a lot of SNPs?
