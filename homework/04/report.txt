@@ -6,9 +6,15 @@ PROBLEMS: (due 10/22)
      below).
 
 
+     ok
+
+
 
   2. Visit the MUMmer (http://mummer.sourceforge.net/) and AMOS
      (http://amos.sourceforge.net) websites.
+
+
+     ok
 
 
 
@@ -17,6 +23,9 @@ PROBLEMS: (due 10/22)
      alignments in general for the MUMmer part of this homework. It is fine to
      use MUMmer2.x for this assignment; note MUMmer4 has the same command line
      interface.
+
+
+     ok
 
 
 
