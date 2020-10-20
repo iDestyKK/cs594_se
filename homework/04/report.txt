@@ -55,7 +55,7 @@ PROBLEMS: (due 10/22)
      "dnadiff".
 
 
-     ok. It's stored as "data/q6.snps"
+     ok. It's stored as "data/q6.snps".
 
 
 
@@ -69,6 +69,9 @@ PROBLEMS: (due 10/22)
      amos3.1.0/test/minimus. Get a basic idea if the input, what the bank is,
      and perform a test assembly (influenza). Submit contigs for this assembly
      (5 points)
+
+
+	 ok. It's stored as "data/influenza-A.contig".
 
 
 
