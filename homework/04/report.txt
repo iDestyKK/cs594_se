@@ -44,6 +44,9 @@ PROBLEMS: (due 10/22)
      (5 points).
 
 
+     ok. It's stored as "data/q5.delta".
+
+
 
   6. Summarize SNPs and indels between these two strains using the "show-snps"
      utility with the "-C" option. Save the ".snps" file in your submission (5
