@@ -35,6 +35,9 @@ PROBLEMS: (due 10/22)
      it.
 
 
+     ok
+
+
 
   5. Run nucmer on the two strains from #1 using default parameters and with
      the "Ames ancestor" as the reference. Submit the resulting ".delta" file
