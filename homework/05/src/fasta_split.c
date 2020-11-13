@@ -7,6 +7,9 @@
  *     specify a file prefix, which will be used for generating the split
  *     files.
  *
+ *     Yes, it's over-engineered and completely overkill. I just wanted to have
+ *     some fun. Ok?
+ *
  * Author:
  *     Clara Nguyen
  */
