@@ -3,6 +3,9 @@ PROBLEMS (due 11/14)
   1. Download the small sample set of sequences from the course website.
 
 
+     ok
+
+
 
   2. Modify your previous global alignment code to compute the Hamming distance
      (number of mismatches) between all pairs of sequences in the small sample
@@ -22,6 +25,9 @@ PROBLEMS (due 11/14)
   4. Download and install the phylip package 
      (http://evolution.genetics.washington.edu/phylip/) and the larger set of
      sequences from the course website. All programs below are part of phylip.
+
+
+     ok
 
 
 
