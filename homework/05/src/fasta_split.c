@@ -191,7 +191,13 @@ void split_files(CN_VEC lines, CN_VEC files, char *prefix, int verbose) {
 	
 	splits = cn_vec_size(files);
 	digits = log10((double) (splits - 1)) + 1; /* number of digits for file  */
-	flen   = strlen(prefix) + digits + 7;      /* predicted filename size    */
+
+	//Force single split to work.
+	if (splits == 1)
+		digits = 1;
+
+	flen = strlen(prefix) + digits + 7;        /* predicted filename size    */
+
 	f = 0;
 
 	buffer = (char *) calloc(flen, sizeof(char));
@@ -208,6 +214,9 @@ void split_files(CN_VEC lines, CN_VEC files, char *prefix, int verbose) {
 		//Output lines
 		op = fopen(buffer, "w");
 		for (i = range->start; i <= range->end; i++) {
+			if (i >= cn_vec_size(lines))
+				break;
+
 			fprintf(
 				op,
 				"%s\n",
