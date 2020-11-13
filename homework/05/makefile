@@ -19,8 +19,9 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/globalign   \
-	$(BIN)/fasta_split
+	$(BIN)/globalign      \
+	$(BIN)/fasta_split    \
+	$(BIN)/hamming_matrix
 
 all: $(EXEC)
 
@@ -34,6 +35,9 @@ $(BIN)/globalign: $(OBJ)/globalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
 
 $(BIN)/fasta_split: $(OBJ)/fasta_split.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+$(BIN)/hamming_matrix: $(OBJ)/hamming_matrix.o $(OBJ)/helper.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^
 
 # -----------------------------------------------------------------------------
 # Static Libraries                                                         {{{1
@@ -50,6 +54,9 @@ $(OBJ)/globalign.o: $(SRC)/globalign.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/fasta_split.o: $(SRC)/fasta_split.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/hamming_matrix.o: $(SRC)/hamming_matrix.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/dp.o: $(SRC)/dp.c
