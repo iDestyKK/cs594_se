@@ -19,7 +19,8 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/globalign
+	$(BIN)/globalign   \
+	$(BIN)/fasta_split
 
 all: $(EXEC)
 
@@ -31,11 +32,14 @@ $(BIN)/globalign: $(OBJ)/globalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
                   $(OBJ)/dp.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
+$(BIN)/fasta_split: $(OBJ)/fasta_split.o $(OBJ)/cnds.a
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
 # -----------------------------------------------------------------------------
 # Static Libraries                                                         {{{1
 # -----------------------------------------------------------------------------
 
-$(OBJ)/cnds.a: $(OBJ)/cn_string.o
+$(OBJ)/cnds.a: $(OBJ)/cn_string.o $(OBJ)/cn_vec.o
 	ar cr $@ $^
 
 # -----------------------------------------------------------------------------
@@ -43,6 +47,9 @@ $(OBJ)/cnds.a: $(OBJ)/cn_string.o
 # -----------------------------------------------------------------------------
 
 $(OBJ)/globalign.o: $(SRC)/globalign.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/fasta_split.o: $(SRC)/fasta_split.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/dp.o: $(SRC)/dp.c
@@ -59,6 +66,9 @@ $(OBJ)/arg_parse.o: $(SRC)/arg_parse.c
 # -----------------------------------------------------------------------------
 
 $(OBJ)/cn_string.o: $(CNDS)/cn_string.c $(CNDS)/cn_string.h
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ)/cn_vec.o: $(CNDS)/cn_vec.c $(CNDS)/cn_vec.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # -----------------------------------------------------------------------------
