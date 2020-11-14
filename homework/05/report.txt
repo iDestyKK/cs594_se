@@ -52,9 +52,9 @@ PROBLEMS (due 11/14)
      current working directory. Now, put these into "hamming_matrix" via EITHER
      of the commands:
 
-         UNIX> ./bin/hamming_matrix seq{0..4}.fasta
+         UNIX> ./bin/hamming_matrix -s seq{0..4}.fasta 2 -1 -2
 
-         UNIX> ./bin/hamming_matrix seq0.fasta seq1.fasta seq2.fasta seq3.fasta seq4.fasta
+         UNIX> ./bin/hamming_matrix -s seq0.fasta seq1.fasta seq2.fasta seq3.fasta seq4.fasta 2 -1 -2
 
 
      They both do the same thing. And they should output the following matrix:
