@@ -113,5 +113,26 @@ PROBLEMS (due 11/14)
      Are they roughly similar to each other? (3 points)
 
 
+     ok. The two tools that were run were Clustal Omega and T-Coffee. You may
+     find all output files in the "data/q6" directory. The trees are stored in
+     ".dnd" files.
+
+
+     Comparing at a quick glance, the results of T-Coffee look similar to
+     NEIGHBOR. The results of Clustal Omega look similar to Kitsch.
+
+
+     At a closer inspection, the ends are different in both cases. Though,
+     there are still some similarities. For instance, KITSCH vs Clustal Omega,
+     EU980364 and EU980380 are next to each other. EU980370 and EU980372 are
+     next to each other as well. EU980375 and EU980379 are adjacent as well.
+     Going up on that branch, EU980378, ...377, ...376 all appear to be the
+     same as well. The structure is similar.
+
+     For NEIGHBOR vs T-Coffee, EU980369 and EU980381 are next to each other
+     (though in VERY different spots). EU980370 and EU980371 are next to each
+     other. Other than that, not many other similarities can be found. The
+     appearances of the trees are similar, though.
+
 
 
