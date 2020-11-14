@@ -1,12 +1,10 @@
 /*
- * Global Alignment Utility
+ * Hamming Distance Matrix Generator
  *
  * Description:
  *     Useful tool for comparing and printing out specific data for differences
- *     between two FASTA files. Score, aligned string, DP table printing with
- *     backtrack highlighting supported.
- *
- *     This variant runs the two FASTA files through Global Alignment.
+ *     between multiple FASTA files. Score and aligned string between all
+ *     possible FASTA files is supported.
  *
  * Author:
  *     Clara Nguyen
@@ -54,28 +52,26 @@ inline int ij2indx(size_t i, size_t j, size_t seq_num) {
 // ----------------------------------------------------------------------------
 
 int main(int argc, char ** argv) {
-	size_t i, j, sz, nf, indx;
-	CN_VEC f, dp_objs;
+	size_t i, j, k, l, sz, nf, indx, il;
+	int *score, highest;
+	CN_VEC f, dp_objs, scores;
 	CN_STRING *sit;
 	DP *objs;
 	PARAM_T params;
 
 	//Argument check
-	if (argc < 7) {
+	if (argc < 7 || (argc >= 2 && argv[1][0] != '-')) {
 		fprintf(
 			stderr,
-			"usage: %s -amqst file1 file2 [file3 [file4 [...]]] match_val"
+			"usage: %s -aqs file1 file2 [file3 [file4 [...]]] match_val"
 			" mismatch_val gap_val\n\n"
 			"Parameter Information:\n"
 			"\t-a\tDisplay strings post-alignment\n"
-			"\t-m\tDisplay the DP table\n"
 			"\t-q\tQuiet(er). Stops printing headers before each section\n"
-			"\t-s\tDisplay the global alignment score\n"
-			"\t-t\tHighlight the traceback in red via ANSI (enables \"-m\" "
-			"flag)\n"
+			"\t-s\tDisplay the hamming distance matrix of scores\n"
 			"\nThe information printed out is in the order you define the "
-			"arguments. So \"-am\" will print\nthe alignment, then the DP "
-			"table. And \"-ma\" will do the same but in reverse order.\n",
+			"arguments. So \"-as\" will print\nthe alignments, then the "
+			"matrix. And \"-sa\" will do the same but in reverse order.\n",
 			argv[0]
 		);
 		return 1;
@@ -98,9 +94,16 @@ int main(int argc, char ** argv) {
 	for (i = 2; i < argc - 3; i++)
 		cn_vec_get(f, CN_STRING, i - 2) = fasta_import_to_cn_string(argv[i]);
 
+	//Setup scores to be seq x seq (all pairs/combinations).
+	scores = cn_vec_init(int);
+	cn_vec_resize(scores, nf * nf);
+
+	highest = 0;
+
 	//Construct the DP table for all possible pairs/combinations
-	sit  = (CN_STRING *) cn_vec_data(f      );
-	objs = (DP        *) cn_vec_data(dp_objs);
+	sit   = (CN_STRING *) cn_vec_data(f      );
+	objs  = (DP        *) cn_vec_data(dp_objs);
+	score = (int       *) cn_vec_data(scores );
 
 	for (i = 0; i < nf; i++) {
 		for (j = i; j < nf; j++) {
@@ -115,35 +118,71 @@ int main(int argc, char ** argv) {
 
 			//Ok... do it.
 			dp_run_global(objs[indx]);
+
+			//print_header(j, params->flag_quiet, "STRING ALIGNMENT:\n");
+			score[indx] = dp_hamming_distance(
+				objs[indx],
+				objs[indx]->w - 1,
+				objs[indx]->h - 1,
+				1
+			);
+
+			//Assign the highest score to "highest"
+			if (score[indx] > highest)
+				highest = score[indx];
 		}
 	}
-/*
-	//Ok, print out whatever was specified
+
 	sz = strlen(argv[1]);
-	j = 0;
+	k = 0;
 
-	for (i = 0; i < sz; i++) {
-		switch (argv[1][i]) {
+	for (l = 0; l < sz; l++) {
+		switch (argv[1][l]) {
 			case 'a':
-				print_header(j, params->flag_quiet, "STRING ALIGNMENT:\n");
-				dp_print_align(obj, obj->w - 1, obj->h - 1, 1);
-				break;
+				print_header(k, params->flag_quiet, "STRING ALIGNMENT:\n");
 
-			case 'm':
-				if (params->flag_highlight)
-					dp_backtrack(obj, obj->w - 1, obj->h - 1, 1);
+				//Print those alignments out
+				for (i = 0; i < nf; i++) {
+					for (j = i + 1; j < nf; j++) {
+						indx = ij2indx(i, j, nf);
+						printf("\nDIFF STR%d VS STR%d:\n", i, j);
 
-				print_header(j, params->flag_quiet, "DP TABLE:\n");
-				dp_print_table(obj);
+						dp_print_align(
+							objs[indx],
+							objs[indx]->w - 1,
+							objs[indx]->h - 1,
+							1
+						);
+					}
+				}
+				
 				break;
 
 			case 's':
-				print_header(j, params->flag_quiet, "ALIGNMENT SCORE:\n");
-				printf("%d\n", obj->table[obj->w - 1][obj->h - 1]);
+				print_header(k, params->flag_quiet, "HAMMING DIST. MATRIX:\n");
+
+				//Use length of largest score to determine space needed
+				il = intlen(highest);
+				
+				//Print those scores out
+				for (i = 0; i < nf; i++) {
+					for (j = 0; j < nf; j++) {
+						printf(
+							/* only print spaces prior to end of line */
+							(j == nf - 1)
+								? " %*d"
+								: " %*d ",
+							il,
+							score[ij2indx(i, j, nf)]
+						);
+					}
+					printf("\n");
+				}
+
 				break;
 		}
 	}
-	*/
+
 
 	//Free memory
 	arg_free(params);
@@ -159,6 +198,7 @@ int main(int argc, char ** argv) {
 
 	//Free the vectors that contained... well... everything...
 	cn_vec_free(dp_objs);
+	cn_vec_free(scores);
 	cn_vec_free(f);
 
 	//We're done here.
