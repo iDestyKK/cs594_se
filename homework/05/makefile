@@ -19,7 +19,7 @@ CNDS = $(LIB)/cnds
 
 # Executables
 EXEC = \
-	$(BIN)/globalign      \
+	$(BIN)/hamming_matrix \
 	$(BIN)/fasta_split    \
 	$(BIN)/naive_hamming
 
@@ -29,8 +29,8 @@ all: $(EXEC)
 # Executables                                                              {{{1
 # -----------------------------------------------------------------------------
 
-$(BIN)/globalign: $(OBJ)/globalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
-                  $(OBJ)/dp.o $(OBJ)/cnds.a
+$(BIN)/hamming_matrix: $(OBJ)/hamming_matrix.o $(OBJ)/helper.o \
+                       $(OBJ)/arg_parse.o $(OBJ)/dp.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(BIN)/fasta_split: $(OBJ)/fasta_split.o $(OBJ)/cnds.a
@@ -50,7 +50,7 @@ $(OBJ)/cnds.a: $(OBJ)/cn_string.o $(OBJ)/cn_vec.o
 # Object Files (Program Source)                                            {{{1
 # -----------------------------------------------------------------------------
 
-$(OBJ)/globalign.o: $(SRC)/globalign.c
+$(OBJ)/hamming_matrix.o: $(SRC)/hamming_matrix.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/fasta_split.o: $(SRC)/fasta_split.c

@@ -12,9 +12,10 @@
 // Helper Functions                                                        {{{1
 // ----------------------------------------------------------------------------
 
-size_t intlen(int);
-int    min   (int, int);
-int    max   (int, int);
+size_t intlen          (int);
+int    min             (int, int);
+int    max             (int, int);
+int    hamming_distance(const char *, const char *);
 
 // ----------------------------------------------------------------------------
 // DP Object Function Prototypes                                           {{{1
@@ -40,14 +41,15 @@ typedef struct dp {
 } *DP;
 
 //Function Prototypes
-DP   dp_init       (char *, char *, int, int, int);
-void dp_run_global (DP);
-void dp_run_local  (DP);
-void dp_run_egfa   (DP);
-void dp_clear      (DP);
-void dp_backtrack  (DP, size_t, size_t, size_t);
-void dp_print_table(DP);
-void dp_print_align(DP, size_t, size_t, size_t);
-void dp_free       (DP);
+DP   dp_init            (char *, char *, int, int, int);
+void dp_run_global      (DP);
+void dp_run_local       (DP);
+void dp_run_egfa        (DP);
+void dp_clear           (DP);
+void dp_backtrack       (DP, size_t, size_t, size_t);
+void dp_print_table     (DP);
+void dp_print_align     (DP, size_t, size_t, size_t);
+int  dp_hamming_distance(DP, size_t, size_t, size_t);
+void dp_free            (DP);
 
 #endif

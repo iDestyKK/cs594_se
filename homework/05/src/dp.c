@@ -44,6 +44,26 @@ int max(int a, int b) {
 	return (a > b) ? a : b;
 }
 
+/*
+ * hamming_distance                                                        {{{2
+ *
+ * Computed the hamming distance between two strings in "seqs", namely "s0" and
+ * "s1".
+ */
+
+int hamming_distance(const char *str1, const char *str2) {
+	size_t score, i, slen;
+
+	//Constant time string length lookup
+	slen = strlen(str1);
+
+	//Now then... compute the score
+	for (score = 0, i = 0; i < slen; i++)
+		score += (str1[i] != str2[i] && str1[i] != '-' && str2[i] != '-');
+
+	return score;
+}
+
 // ----------------------------------------------------------------------------
 // DP Object Function Declarations                                         {{{1
 // ----------------------------------------------------------------------------
@@ -545,6 +565,151 @@ void dp_print_align(DP obj, size_t start_x, size_t start_y, size_t force_start) 
 	printf("%s\n%s\n", res[0], res[1]);
 	free(res[0]);
 	free(res[1]);
+}
+
+/*
+ * dp_hamming_distance                                                     {{{2
+ *
+ * Returns the hamming distance between two strings, ignoring indels. Thus,
+ * mismatches 
+ */
+
+int dp_hamming_distance(DP obj, size_t start_x, size_t start_y, size_t force_start) {
+	int i, j, force, dec_amt, score;
+	size_t sz;
+	char *res[2];
+
+	//Go from bottom right to top left;
+	sz = 0;
+	force = 0;
+	i = start_x;
+	j = start_y;
+
+	while (!force) {
+		if (!force_start) {
+			if (i <= 0 || j <= 0)
+				break;
+		}
+
+		switch(obj->actions[i][j]) {
+			case DP_NULL:
+				force = 1;
+				break;
+
+			case DP_MATCH:
+				i--, j--;
+				break;
+
+			case DP_SPACE1:
+				j--;
+				break;
+
+			case DP_SPACE2:
+				i--;
+				break;
+		}
+
+		if (i < 0 || j < 0)
+			break;
+
+		sz++;
+	}
+
+	//If at a null spot, we can try to approach the top-left corner
+	if (i != -1 && j != -1 && force_start == 1) {
+		dec_amt = 1;
+
+		//Go left
+		if (i > 0) {
+			for (; i > 0; i--, sz++);
+			//dec_amt++;
+		}
+
+		//Go up
+		if (j > 0) {
+			for (; j > 0; j--, sz++);
+			//dec_amt++;
+		}
+
+		//Deduct accordingly
+		sz -= dec_amt;
+	}
+
+	//Create strings and do it again
+	res[0] = (char *) calloc(sz + 1, sizeof(char));
+	res[1] = (char *) calloc(sz + 1, sizeof(char));
+
+	force = 0;
+	i = start_x;
+	j = start_y;
+
+	while (!force) {
+		/*
+		if (i <= 0 || j <= 0)
+			break;
+		*/
+
+		sz--;
+
+#if DEBUG == 1
+		printf(
+			"AT (%d, %d) %c %c (%d): %d\n",
+			i, j,
+			obj->s[0][j - 1], obj->s[1][i - 1],
+			obj->table[i][j],
+			obj->actions[i][j]
+		);
+#endif
+
+		switch(obj->actions[i][j]) {
+			case DP_NULL:
+				force = 1;
+				break;
+
+			case DP_MATCH:
+				res[0][sz] = obj->s[0][j - 1];
+				res[1][sz] = obj->s[1][i - 1];
+				i--, j--;
+				break;
+
+			case DP_SPACE1:
+				res[0][sz] = obj->s[0][j - 1];
+				res[1][sz] = '-';
+				j--;
+				break;
+
+			case DP_SPACE2:
+				res[0][sz] = '-';
+				res[1][sz] = obj->s[1][i - 1];
+				i--;
+				break;
+		}
+
+		if (i < 0 || j < 0)
+			break;
+	}
+
+	//Ditto. If at a null spot, we can try to approach the top-left corner
+	if (i != -1 && j != -1 && force_start == 1) {
+		//Go left
+		for (; i > 0; i--, sz--) {
+			res[0][sz] = '-';
+			res[1][sz] = obj->s[1][i - 1];
+		}
+
+		//Go up
+		for (; j > 0; j--, sz--) {
+			res[0][sz] = obj->s[0][j - 1];
+			res[1][sz] = '-';
+		}
+	}
+
+	//printf("%s\n%s\n", res[0], res[1]);
+	score = hamming_distance(res[0], res[1]);
+	free(res[0]);
+	free(res[1]);
+
+	return score;
 }
 
 /*
