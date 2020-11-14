@@ -97,11 +97,11 @@ PROBLEMS (due 11/14)
      NEIGHBOR.
 
 
-     You may find the files in the "data" directory. The output of DNADIST is
-     in "data/q4_dnadist.outfile". The output files for KITSCH are in both
-     "data/q4_kitsch.outfile" and "data/q4_kitsch.outtree". The output files
-     for NEIGHBOR are in both "data/q4_neighbor.outfile" and
-     "data/q4_neighbor.outtree".
+     You may find the files in the "data/q5" directory. The output of DNADIST
+     is in "data/q5/dnadist.outfile". The output files for KITSCH are in both
+     "data/q5/kitsch.outfile" and "data/q5/kitsch.outtree". The output files
+     for NEIGHBOR are in both "data/q5/neighbor.outfile" and
+     "data/q5/neighbor.outtree".
 
 
 
