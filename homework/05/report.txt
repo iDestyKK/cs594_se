@@ -93,6 +93,17 @@ PROBLEMS (due 11/14)
      comment on differences if any. (5 points)
 
 
+     ok. The tree outputted by KITSCH is different than the one outputted by
+     NEIGHBOR.
+
+
+     You may find the files in the "data" directory. The output of DNADIST is
+     in "data/q4_dnadist.outfile". The output files for KITSCH are in both
+     "data/q4_kitsch.outfile" and "data/q4_kitsch.outtree". The output files
+     for NEIGHBOR are in both "data/q4_neighbor.outfile" and
+     "data/q4_neighbor.outtree".
+
+
 
   6. Run the Clustal Omega multiple sequence alignment tool and one additional
      tool of your choice on the large dataset ($4) using this link:
