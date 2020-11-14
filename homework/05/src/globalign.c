@@ -23,6 +23,7 @@
 
 //CNDS (Clara Nguyen's Data Structures)
 #include "../lib/cnds/cn_string.h"
+#include "../lib/cnds/cn_vec.h"
 
 // ----------------------------------------------------------------------------
 // Helper Functions                                                        {{{1
@@ -33,21 +34,38 @@
 	if (counter++ > 0) printf("\n"); \
 	if (!flag) printf("%s", str);
 
+/*
+ * ij2indx                                                                 {{{2
+ *
+ * Converts i, j 2d matrix coordinate into a 1d array index given the number of
+ * sequences we are computing the hamming distance for. This is so we can use a
+ * 1D vector to store results rather than a 2D one.
+ */
+
+inline int ij2indx(size_t i, size_t j, size_t seq_num) {
+	if (j >= i)
+		return j + (i * seq_num);
+
+	return i + (j * seq_num);
+}
+
 // ----------------------------------------------------------------------------
 // Main Function                                                           {{{1
 // ----------------------------------------------------------------------------
 
 int main(int argc, char ** argv) {
-	size_t i, j, sz;
-	CN_STRING f1, f2;
-	DP obj;
+	size_t i, j, sz, nf, indx;
+	CN_VEC f, dp_objs;
+	CN_STRING *sit;
+	DP *objs;
 	PARAM_T params;
 
 	//Argument check
-	if (argc != 7) {
+	if (argc < 7) {
 		fprintf(
 			stderr,
-			"usage: %s -amqst file1 file2 match_val mismatch_val gap_val\n\n"
+			"usage: %s -amqst file1 file2 [file3 [file4 [...]]] match_val"
+			" mismatch_val gap_val\n\n"
 			"Parameter Information:\n"
 			"\t-a\tDisplay strings post-alignment\n"
 			"\t-m\tDisplay the DP table\n"
@@ -68,18 +86,38 @@ int main(int argc, char ** argv) {
 	//Parse arguments
 	arg_parse(params, argv[1]);
 
-	f1 = fasta_import_to_cn_string(argv[2]);
-	f2 = fasta_import_to_cn_string(argv[3]);
+	f = cn_vec_init(CN_STRING);
+	nf = argc - 5;
+	cn_vec_resize(f, nf);
 
-	//Construct the DP table
-	obj = dp_init(
-		cn_string_str(f1), cn_string_str(f2),
-		atoi(argv[4]), atoi(argv[5]), atoi(argv[6])
-	);
+	//Setup CN_VEC of DP objects
+	dp_objs = cn_vec_init(DP);
+	cn_vec_resize(dp_objs, nf * nf);
 
-	//Ok... do it.
-	dp_run_global(obj);
+	//Read in the files
+	for (i = 2; i < argc - 3; i++)
+		cn_vec_get(f, CN_STRING, i - 2) = fasta_import_to_cn_string(argv[i]);
 
+	//Construct the DP table for all possible pairs/combinations
+	sit  = (CN_STRING *) cn_vec_data(f      );
+	objs = (DP        *) cn_vec_data(dp_objs);
+
+	for (i = 0; i < nf; i++) {
+		for (j = i; j < nf; j++) {
+			indx = ij2indx(i, j, nf);
+
+			objs[indx] = dp_init(
+				cn_string_str(sit[i]), cn_string_str(sit[j]),
+				atoi(argv[argc - 3]),
+				atoi(argv[argc - 2]),
+				atoi(argv[argc - 1])
+			);
+
+			//Ok... do it.
+			dp_run_global(objs[indx]);
+		}
+	}
+/*
 	//Ok, print out whatever was specified
 	sz = strlen(argv[1]);
 	j = 0;
@@ -105,12 +143,23 @@ int main(int argc, char ** argv) {
 				break;
 		}
 	}
+	*/
 
 	//Free memory
-	dp_free(obj);
 	arg_free(params);
-	cn_string_free(f1);
-	cn_string_free(f2);
+
+	//Free all DP instances
+	for (i = 0; i < nf; i++)
+		for (j = i; j < nf; j++)
+			dp_free(cn_vec_get(dp_objs, DP, ij2indx(i, j, nf)));
+
+	//Free all FASTA strings
+	cn_vec_traverse(f, sit)
+		cn_string_free(*sit);
+
+	//Free the vectors that contained... well... everything...
+	cn_vec_free(dp_objs);
+	cn_vec_free(f);
 
 	//We're done here.
 	return 0;
