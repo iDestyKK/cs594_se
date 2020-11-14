@@ -21,7 +21,7 @@ CNDS = $(LIB)/cnds
 EXEC = \
 	$(BIN)/globalign      \
 	$(BIN)/fasta_split    \
-	$(BIN)/hamming_matrix
+	$(BIN)/naive_hamming
 
 all: $(EXEC)
 
@@ -36,7 +36,7 @@ $(BIN)/globalign: $(OBJ)/globalign.o $(OBJ)/helper.o $(OBJ)/arg_parse.o \
 $(BIN)/fasta_split: $(OBJ)/fasta_split.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^ -lm
 
-$(BIN)/hamming_matrix: $(OBJ)/hamming_matrix.o $(OBJ)/helper.o $(OBJ)/cnds.a
+$(BIN)/naive_hamming: $(OBJ)/naive_hamming.o $(OBJ)/helper.o $(OBJ)/cnds.a
 	$(CC) $(CFLAGS) -o $@ $^
 
 # -----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ $(OBJ)/globalign.o: $(SRC)/globalign.c
 $(OBJ)/fasta_split.o: $(SRC)/fasta_split.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(OBJ)/hamming_matrix.o: $(SRC)/hamming_matrix.c
+$(OBJ)/naive_hamming.o: $(SRC)/naive_hamming.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ)/dp.o: $(SRC)/dp.c
