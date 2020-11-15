@@ -55,13 +55,20 @@ PROBLEMS: (due 10/22)
      "dnadiff".
 
 
-     ok. It's stored as "data/q6.snps".
+     ok. It's stored as "data/q6.snps". In addition, you may find the files
+     that were output from dnadiff in "data/q6_dnadiff" directory.
 
 
 
   7. Submit a brief writeup in your report summarizing the results. Hypothesize
      what the differences may be between the strains? Are there a lot of SNPs?
      Potential structural differences? (10 points)
+
+
+     Based on dnadiff, there are 19 SNPs and 13 GSNPs. The average identical is
+     99.99. Based on "q6.snps" (generated with show-snps in the last problem),
+     the numbers in the columns [P1] and [P2] are very close. They are merely
+     off by a few (some by 1, some by about 100). Some are exactly the same.
 
 
 
@@ -99,4 +106,16 @@ PROBLEMS: (due 10/22)
      (10 points)
 
 
-     
+     According to the logs from running minimus (data/camp.runAmos.log), there
+     are 284 contigs.
+
+     Based on dnadiff, there are 21 SNPs and 3 GSNPs. The average identical is
+     99.94%. Based on "q10.snps" (generated with show-snps just for this
+     problem), the numbers in the columns [P1] and [P2] are very far off from
+     each other. It honestly doesn't look like a good assembly from this alone.
+
+     A run of dnadiff and its output files can be found at "data/q11_dnadiff"
+     just for this problem.
+
+
+
