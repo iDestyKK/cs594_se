@@ -77,6 +77,9 @@ PROBLEMS (due 11/14)
      points).
 
 
+     ok. The digital sketch is located in "data/q3/sketch.png".
+
+
 
   4. Download and install the phylip package 
      (http://evolution.genetics.washington.edu/phylip/) and the larger set of
