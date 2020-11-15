@@ -44,6 +44,6 @@ it into `submit`.
 + 01 - DNA/Genome Analysis
 + 02 - Sequence Alignment
 + 03 - Hidden Markov Models (Occasionally Dishonest Casino) & Glimmer
-- 04 - ???
-- 05 - ???
++ 04 - MUMmer & AMOS utilisation
++ 05 - Hamming Distance, UPGMA, PHYLIP
 ```
