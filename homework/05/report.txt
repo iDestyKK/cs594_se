@@ -77,7 +77,8 @@ PROBLEMS (due 11/14)
      points).
 
 
-     ok. The digital sketch is located in "data/q3/sketch.png".
+     ok. The digital sketch is located in "data/q3/sketch.png". Though useless,
+     the original OneNote page is located in "data/q3/sketch.one".
 
 
 
