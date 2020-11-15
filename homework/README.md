@@ -4,6 +4,15 @@
 Here, you will find my homework for the course. These are the big assignments
 that we were given two weeks to do.
 
+## Homework Progression
+```diff
++ 01 - DNA/Genome Analysis
++ 02 - Sequence Alignment
++ 03 - Hidden Markov Models (Occasionally Dishonest Casino) & Glimmer
++ 04 - MUMmer & AMOS utilisation
++ 05 - Hamming Distance, UPGMA, PHYLIP
+```
+
 ## Directory Structure
 
 ### Assignment Directories
@@ -38,12 +47,3 @@ UNIX> make package
 ```
 The script simply takes the `submit.tar.xz` created by `make package` and moves
 it into `submit`.
-
-## Homework Progression
-```diff
-+ 01 - DNA/Genome Analysis
-+ 02 - Sequence Alignment
-+ 03 - Hidden Markov Models (Occasionally Dishonest Casino) & Glimmer
-- 04 - ???
-- 05 - ???
-```

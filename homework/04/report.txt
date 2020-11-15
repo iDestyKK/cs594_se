@@ -1,0 +1,121 @@
+PROBLEMS: (due 10/22)
+
+  1. We will reuse the two Anthrax strains from Hw#3, the gold standard "Ames
+     ancestor" that is virulent (NC_007530) and the non-virulent lab strain
+     "Ames" (NC_003997). There will also be sample data for assembly (see
+     below).
+
+
+     ok
+
+
+
+  2. Visit the MUMmer (http://mummer.sourceforge.net/) and AMOS
+     (http://amos.sourceforge.net) websites.
+
+
+     ok
+
+
+
+  3. Read main pages to get a feel for the project, the players, and the goals.
+     Specifically, focus on the sections/help on "nucmer" and on genome
+     alignments in general for the MUMmer part of this homework. It is fine to
+     use MUMmer2.x for this assignment; note MUMmer4 has the same command line
+     interface.
+
+
+     ok
+
+
+
+  4. Download and install the MUMmer package and AMOS 3.1.0 (click "Download"
+     on the quick links). For this homework, you do not need to install Qt
+     required for some of the visualization tools. Minimus will work without
+     it.
+
+
+     ok
+
+
+
+  5. Run nucmer on the two strains from #1 using default parameters and with
+     the "Ames ancestor" as the reference. Submit the resulting ".delta" file
+     (5 points).
+
+
+     ok. It's stored as "data/q5.delta".
+
+
+
+  6. Summarize SNPs and indels between these two strains using the "show-snps"
+     utility with the "-C" option. Save the ".snps" file in your submission (5
+     points) HINT: You may want to also run mummerplot with the --filter option
+     to help with the rest of this assignment or the more comprehensive
+     "dnadiff".
+
+
+     ok. It's stored as "data/q6.snps". In addition, you may find the files
+     that were output from dnadiff in "data/q6_dnadiff" directory.
+
+
+
+  7. Submit a brief writeup in your report summarizing the results. Hypothesize
+     what the differences may be between the strains? Are there a lot of SNPs?
+     Potential structural differences? (10 points)
+
+
+     Based on dnadiff, there are 19 SNPs and 13 GSNPs. The average identical is
+     99.99. Based on "q6.snps" (generated with show-snps in the last problem),
+     the numbers in the columns [P1] and [P2] are very close. They are merely
+     off by a few (some by 1, some by about 100). Some are exactly the same.
+
+
+
+  8. Read the minimus documentation, and look at the example projects in
+     amos3.1.0/test/minimus. Get a basic idea if the input, what the bank is,
+     and perform a test assembly (influenza). Submit contigs for this assembly
+     (5 points)
+
+
+     ok. It's stored as "data/influenza-A.contig".
+
+
+
+  9. Download the test dataset from the course website, and assemble it using
+     minimus. Submit the resulting contigs (5 points)
+
+
+     ok. It's stored as "data/camp.contig".
+
+
+
+ 10. Compare your minimus assembly to the reference available from the course
+     webpage using nucmer. Submit the resulting delta file for the bacteria
+     genome (5 points).
+
+
+     ok. It's stored as "data/q10.delta".
+
+
+
+ 11. Provide a brief summary of the results (how many contigs, average contig
+     size, etc.) for grading and do the same sort of comparisons as #7
+     (show-coords, show-snps, etc). Do you think these are good or bad
+     assemblies and why? Submit this summary and any relevant supporting files
+     (10 points)
+
+
+     According to the logs from running minimus (data/camp.runAmos.log), there
+     are 284 contigs.
+
+     Based on dnadiff, there are 21 SNPs and 3 GSNPs. The average identical is
+     99.94%. Based on "q10.snps" (generated with show-snps just for this
+     problem), the numbers in the columns [P1] and [P2] are very far off from
+     each other. It honestly doesn't look like a good assembly from this alone.
+
+     A run of dnadiff and its output files can be found at "data/q11_dnadiff"
+     just for this problem.
+
+
+

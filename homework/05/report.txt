@@ -1,0 +1,142 @@
+SUBMISSION DETAILS
+
+  Before we begin, this submission contains several directories. For the sake
+  of simplicity, "sec" is the source code to the programs this assignment
+  requests. "lib" contains CNDS (Clara Nguyen's Data Structures), which is a
+  collection of C libraries written entirely by me. All code here (libraries or
+  not) is entirely my own work.
+
+  The data files the assignment requires are stored in "data". My apologies if
+  storing them in a directory causes any problems.
+
+  There is a makefile supplied with this submission. To compile every program,
+  simply run "make". Every executable will be put into the "bin" directory.
+
+  This is written in C and adheres to the GNU89 standard (C89 with GNU
+  extensions). Compilation was tested on UTK's EECS Hydra machines.
+
+
+PROBLEMS (due 11/14)
+
+  1. Download the small sample set of sequences from the course website.
+
+
+     ok
+
+
+
+  2. Modify your previous global alignment code to compute the Hamming distance
+     (number of mismatches) between all pairs of sequences in the small sample
+     ignoring indels. Output the resulting sample matrix to the screen, and
+     place the program, the sample set, and instructions to compile/run this
+     code in your dropbox (5 points)
+
+
+     To compile, simply run the following command in the same directory as the
+     supplied "makefile":
+
+         UNIX> make
+
+
+
+     Two executables, named "fasta_split" and "hamming_matrix" will be compiled
+     and stored in the "bin" directory. These will be used for this problem.
+
+     First, run "fasta_split" on "data/small.fasta.txt". This will split it
+     into 5 separate fasta files (as that file contains 5 sequences in it):
+
+         UNIX> ./bin/fasta_split data/small.fasta.txt seq
+
+
+     This will create "seq0.fasta", "seq1.fasta", ... , "seq4.fasta" in the
+     current working directory. Now, put these into "hamming_matrix" via EITHER
+     of the commands:
+
+         UNIX> ./bin/hamming_matrix -s seq{0..4}.fasta 2 -1 -2
+
+         UNIX> ./bin/hamming_matrix -s seq0.fasta seq1.fasta seq2.fasta seq3.fasta seq4.fasta 2 -1 -2
+
+
+     They both do the same thing. And they should output the following matrix:
+
+           0   1  15  16  14
+           1   0  14  15  13
+          15  14   0   1   1
+          16  15   1   0   2
+          14  13   1   2   0
+
+
+     For your convenience, the results of "fasta_split" are stored in the
+     included "data/small_split", just in case the executable doesn't work.
+
+
+
+  3. Generate by hand the distance-based tree for the small set of sequences
+     using the UPGMA algorithm. You may either hand in your answer as a
+     hardcopy in Prof. Emrich's mail box or as an ecopy in your dropbox (8
+     points).
+
+
+     ok. The digital sketch is located in "data/q3/sketch.png". Though useless,
+     the original OneNote page is located in "data/q3/sketch.one".
+
+
+
+  4. Download and install the phylip package 
+     (http://evolution.genetics.washington.edu/phylip/) and the larger set of
+     sequences from the course website. All programs below are part of phylip.
+
+
+     ok
+
+
+
+  5. Generate a distance-based tree using phylip for the larger dataset using
+     both KITSCH and NEIGHBOR. You will need to compute a distance matrix first
+     using DNADIST. Place the raw tree files into your dropbox and briefly
+     comment on differences if any. (5 points)
+
+
+     ok. The tree outputted by KITSCH is different than the one outputted by
+     NEIGHBOR.
+
+
+     You may find the files in the "data/q5" directory. The output of DNADIST
+     is in "data/q5/dnadist.outfile". The output files for KITSCH are in both
+     "data/q5/kitsch.outfile" and "data/q5/kitsch.outtree". The output files
+     for NEIGHBOR are in both "data/q5/neighbor.outfile" and
+     "data/q5/neighbor.outtree".
+
+
+
+  6. Run the Clustal Omega multiple sequence alignment tool and one additional
+     tool of your choice on the large dataset ($4) using this link:
+     http://www.ebi.ac.uk/Tools/msa/. Place a text version of the resulting
+     "alignment files" in your drop box (6 points) Are the trees largely
+     similar compared to the KITSCH and NEIGHBOR on a quick glance (3 points)?
+     Are they roughly similar to each other? (3 points)
+
+
+     ok. The two tools that were run were Clustal Omega and T-Coffee. You may
+     find all output files in the "data/q6" directory. The trees are stored in
+     ".dnd" files.
+
+
+     Comparing at a quick glance, the results of T-Coffee look similar to
+     NEIGHBOR. The results of Clustal Omega look similar to Kitsch.
+
+
+     At a closer inspection, the ends are different in both cases. Though,
+     there are still some similarities. For instance, KITSCH vs Clustal Omega,
+     EU980364 and EU980380 are next to each other. EU980370 and EU980372 are
+     next to each other as well. EU980375 and EU980379 are adjacent as well.
+     Going up on that branch, EU980378, ...377, ...376 all appear to be the
+     same as well. The structure is similar.
+
+     For NEIGHBOR vs T-Coffee, EU980369 and EU980381 are next to each other
+     (though in VERY different spots). EU980370 and EU980371 are next to each
+     other. Other than that, not many other similarities can be found. The
+     appearances of the trees are similar, though.
+
+
+
