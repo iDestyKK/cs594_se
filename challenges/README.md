@@ -39,4 +39,8 @@ needed is in that single directory. They are all standalone.
 + 03 - Polymorphisms, Lookup Tables, Markov Model Drawing
 - 04 - Occasionally Dishonest Casino probabilities, Hidden Markov Models
 + 05 - Suffix Trees, Suffix Arrays, LCP Arrays
+- 06 - Genome Assembly
+- 07 - Phylogenetics
 ```
+***Note:** I'm pretty sure I did 6 and 7. But the files are not committed and
+not found. Oh well.*
